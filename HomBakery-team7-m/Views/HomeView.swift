@@ -1,5 +1,5 @@
 //
-//  CourseDetailsView.swift
+//  ContentView.swift
 //  HomBakery-team7-m
 //
 //  Created by Linda on 23/12/2025.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct CourseDetailsView: View {
+struct HomeView: View {
 
     
     var body: some View {
@@ -20,5 +20,5 @@ struct CourseDetailsView: View {
     }}
 
 #Preview {
-    CourseDetailsView()
+    HomeView()
 }
