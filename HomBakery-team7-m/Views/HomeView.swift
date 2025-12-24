@@ -15,10 +15,12 @@ struct HomeView: View {
         ZStack {
             Color("AppBackground")
                             .ignoresSafeArea()
-        }
-        
+            
+    }
     }}
 
 #Preview {
     HomeView()
 }
+
+
