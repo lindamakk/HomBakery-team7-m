@@ -15,6 +15,7 @@ struct ProfileView: View {
         ZStack {
             Color("AppBackground")
                             .ignoresSafeArea()
+            ProfileCard().padding()
         }
         
     }}
@@ -22,3 +23,4 @@ struct ProfileView: View {
 #Preview {
     ProfileView()
 }
+
