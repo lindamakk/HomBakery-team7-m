@@ -14,7 +14,8 @@ struct HomBakery_team7_mApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            MainTabView()
+//            HomeView()
         }
 
     }
