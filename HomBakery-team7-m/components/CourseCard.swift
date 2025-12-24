@@ -25,22 +25,25 @@ struct CourseCard: View {
                 Text(course.title)
                     .font(.system(size: 16, weight: .semibold));
                 Text("course.description")
-                VStack( alignment:.leading , spacing:4 ){
-                    HStack(alignment: .center , spacing:4){
+                
+                //
+                HStack(alignment:.center , spacing:4 ){
+                    VStack(alignment: .center, spacing:4){
                         Image(systemName: "hourglass")
-                        
-                        //i do not know if i need to change size
+
                         .font(.system(size: 15))
                             .foregroundColor(Color("brown"))
-                        Text(course.duration)
-                            .font(.system(size: 12, weight: .medium));
+                        
+                        Image(systemName: "calendar")
+                        .font(.system(size: 15))
+                            .foregroundColor(Color("brown"))
+
                         
                     }
-                    HStack(alignment: .center , spacing:4){
-                        Image(systemName: "calendar")
-                        //i do not know if i need to change size
-                        .font(.system(size: 15))
-                            .foregroundColor(Color("brown"))
+                    VStack( alignment: .leading,spacing:4){
+
+                        Text(course.duration)
+                            .font(.system(size: 12, weight: .medium));
                         Text(course.startDate)
                             .font(.system(size: 11, weight: .medium));
                     }
