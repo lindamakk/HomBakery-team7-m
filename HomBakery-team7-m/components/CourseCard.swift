@@ -21,22 +21,27 @@ struct CourseCard: View {
             
             
             //p2
-            VStack(alignment:.leading){
-                Text(course.title)
-                    .font(.system(size: 16, weight: .semibold));
-                Text("course.description")
+            VStack(alignment:.leading , spacing: 7){
                 
-                //
+                //1
+                VStack(alignment: .leading,spacing:6){
+                    Text(course.title)
+                        .font(.system(size: 16, weight: .semibold));
+                    
+                    Level(levels: course.level)
+                }
+
+                //2
                 HStack(alignment:.center , spacing:4 ){
                     VStack(alignment: .center, spacing:4){
                         Image(systemName: "hourglass")
 
                         .font(.system(size: 15))
-                            .foregroundColor(Color("brown"))
+                            .foregroundColor(Color("brownColor"))
                         
                         Image(systemName: "calendar")
                         .font(.system(size: 15))
-                            .foregroundColor(Color("brown"))
+                            .foregroundColor(Color("brownColor"))
 
                         
                     }
@@ -72,7 +77,8 @@ struct CourseCard: View {
         description: "Learn the fundamentals",
         duration: "2h 30m",
         startDate: "24 Dec 2025",
-        imageName: "fortest"
+        imageName: "fortest",
+        level: .Beginner
     ))
     
     
@@ -87,4 +93,5 @@ struct CourseCardModel: Identifiable, Codable {
     let duration: String      // e.g., "2 hours"
     let startDate: String     // e.g., "24 Dec 2025"
     let imageName: String     // local asset or URL
+    let level: Levels
 }
