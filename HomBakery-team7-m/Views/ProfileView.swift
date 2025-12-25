@@ -15,6 +15,9 @@ struct ProfileView: View {
         ZStack {
             Color("AppBackground")
                             .ignoresSafeArea()
+            
+            
+            SignInButtonView(action: {}).padding()
         }
         
     }}
