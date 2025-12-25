@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BFA2E67C2EFD33CF0076BA78 /* Swift.gitignore in Resources */ = {isa = PBXBuildFile; fileRef = BFA2E67B2EFD33CF0076BA78 /* Swift.gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		BFA2E6172EFA7FEA0076BA78 /* HomBakery-team7-m.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HomBakery-team7-m.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFA2E67B2EFD33CF0076BA78 /* Swift.gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = Swift.gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -34,6 +39,7 @@
 			children = (
 				BFA2E6192EFA7FEA0076BA78 /* HomBakery-team7-m */,
 				BFA2E6182EFA7FEA0076BA78 /* Products */,
+				BFA2E67B2EFD33CF0076BA78 /* Swift.gitignore */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFA2E67C2EFD33CF0076BA78 /* Swift.gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
