@@ -15,7 +15,7 @@ struct NoBookedCourses: View {
 
             Text("You don’t have any booked courses")
                 .font(.system(size: 14, weight: .medium))
-                .foregroundColor(Color("grey"))
+                .foregroundColor(Color("greyColor"))
         }//v
         .frame(width: .infinity)
     }//view

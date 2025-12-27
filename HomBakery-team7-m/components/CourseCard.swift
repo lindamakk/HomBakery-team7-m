@@ -41,7 +41,7 @@ struct CourseCard: View {
                         
                         Image(systemName: "calendar")
                         .font(.system(size: 15))
-                            .foregroundColor(Color("brownColor"))
+                        .foregroundStyle(Color("brownColor"))
 
                         
                     }
@@ -82,7 +82,7 @@ struct CourseCard: View {
     ))
     
     
-        .padding(.horizontal, 16)
+       // .padding(.horizontal, 16)
 }
 
 

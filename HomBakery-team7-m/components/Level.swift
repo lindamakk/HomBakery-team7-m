@@ -46,7 +46,7 @@ struct Level: View {
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius: 37)
-                .frame(width: 54.37, height: 14.22)
+                .frame(width: 70, height: 14)
                 .foregroundColor(levels.backColor)
             Text(levels.title)
                 .foregroundColor(levels.textColor)
@@ -57,6 +57,6 @@ struct Level: View {
 }
 
 #Preview {
-    Level(levels: .Beginner)
+    Level(levels: .Intermediate)
 
 }
