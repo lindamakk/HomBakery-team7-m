@@ -7,12 +7,14 @@
 
 import SwiftUI
 
-struct SignInButtonView: View {
+struct ButtonView: View {
+    
+    var label: String = "Sign in"
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Text("Sign in")
+            Text(label)
                 .font(.headline)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
@@ -23,7 +25,7 @@ struct SignInButtonView: View {
         .padding(.top, 10)
     }
 }
-//#Preview {
-//    SignInButtonView(action: <#() -> Void#>)
-//}
+#Preview {
+    ButtonView(action:{ })
+}
 
