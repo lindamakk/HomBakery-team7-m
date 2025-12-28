@@ -6,45 +6,61 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct CourseDetailsView: View {
-
+    
+    var courseName: String = "Babka dough"
     var body: some View {
         ZStack {
-            Color("AppBackground")
-                .ignoresSafeArea()
+            Color("AppBackground").ignoresSafeArea()
 
-            VStack(spacing: 20) {
-
-                Image("babka")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 240)
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    AsyncImage(url: URL(string: "https://picsum.photos/200/300")) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(height: 275)
+                    .frame(maxWidth: .infinity)
                     .clipped()
 
-                Text("Babka dough")
-                    .font(.title)
-                    .fontWeight(.bold)
+                    VStack(alignment: .leading) {
+                        Spacer().frame(height: 24)
+                        
+                        Text("About the course:")
+                            .bold()
+                        
+                        Spacer().frame(height: 10)
+                        
+                        Text("Needless to say, you will learn new techniques...")
+                            .font(.subheadline)
 
-                Text("Learn how to bake delicious babka dough with professional chefs.")
-                    .foregroundColor(.gray)
-                    .multilineTextAlignment(.center)
-                    .padding()
-
-                Spacer()
-
-                Button("Book course") {
-                    // booking later
+                        Spacer().frame(height: 24)
+                        Divider()
+                        Spacer().frame(height: 24)
+                        
+                        CourseDetailsTable()
+                        
+                        Spacer().frame(height: 32)
+                        
+                        Map()
+                            .frame(height: 130)
+                            .cornerRadius(12)
+                        
+                        Spacer().frame(height: 24)
+                        
+                        ButtonView(label: "Book a space", action: {})
+                    }
+                    .padding(.horizontal, 16) // Apply padding to the text container only
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.brown)
-                .foregroundColor(.white)
-                .cornerRadius(12)
             }
-            .padding()
         }
-        .navigationTitle("Babka dough")
+        .navigationTitle(courseName)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
