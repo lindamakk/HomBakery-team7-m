@@ -8,7 +8,7 @@ struct BottomSheet: View {
 
     @State private var email = ""
     @State private var password = ""
-    @State private var isPasswordVisible = false
+//    @State private var isPasswordVisible = false
 
     var body: some View {
         ZStack {
@@ -54,68 +54,16 @@ struct BottomSheet: View {
                         }
                     }
 
-                    // Email
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Email")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-
-                        TextField("Email", text: $email)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.gray.opacity(0.3))
-                            )
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
-                    }
-
-                    // Password
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Password")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-
-                        HStack {
-                            Group {
-                                if isPasswordVisible {
-                                    TextField("Password", text: $password)
-                                } else {
-                                    SecureField("Password", text: $password)
-                                }
-                            }
-
-                            Button {
-                                isPasswordVisible.toggle()
-                            } label: {
-                                Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.gray.opacity(0.3))
-                        )
-                    }
-
-                    // زر Sign in
-                    Button {
-                        // sign in logic later
-                    } label: {
-                        Text("Sign in")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.brown)
-                            .cornerRadius(14)
-                    }
-                    .padding(.top, 8)
+             
+                    
+                    //Email
+                    Textfield(label: "Email",  textInput: "", isPassword: false,)
+                    
+                    //password
+                    Textfield(label: "Password",  textInput: "", isPassword: true,)
+                    
+                    
+                    ButtonView(label: "Sign In", action: {})
 
                     Spacer()
                 }
