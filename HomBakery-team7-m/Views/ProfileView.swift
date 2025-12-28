@@ -15,15 +15,18 @@ struct ProfileView: View {
                     .ignoresSafeArea()
 
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 24) {
 
                         // Profile section
                         ProfileCard()
-                            .padding(.top, 8)
+                        
 
+                        
+                        Divider()
+                        
                         // Booked courses title
                         Text("Booked courses")
-                            .font(.headline)
+                            .font(.system(size: 24, weight: .semibold))
                             .padding(.top, 4)
 
                         // Empty state (centered look)
