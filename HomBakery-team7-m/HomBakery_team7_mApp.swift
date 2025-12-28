@@ -10,13 +10,35 @@ import SwiftData
 
 @main
 struct HomBakery_team7_mApp: App {
-
-
+    
+    @State private var showSplash = true
     var body: some Scene {
         WindowGroup {
-            MainTabView()
-//            HomeView()
+            ZStack {
+                if showSplash {
+                    SplashView()
+                        .transition(.opacity.combined(with: .scale))
+                } else {
+                    MainTabView()
+                        .transition(.opacity.combined(with: .scale))
+                }
+            }
+            .animation(.easeInOut(duration: 0.6), value: showSplash)
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    showSplash = false
+                }
+            }
+           
         }
-
+        
     }
+    
+    
+ 
 }
+
+//            HomeView()
+        
+
+
