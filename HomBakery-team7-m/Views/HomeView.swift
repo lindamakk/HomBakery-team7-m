@@ -16,6 +16,23 @@ struct HomeView: View {
             Color("AppBackground")
                             .ignoresSafeArea()
             
+            NavigationStack {
+                
+                SearchTextfield(text: .constant(""))
+                    .padding()
+                
+                Text("Upcoming")
+                ScrollView {
+                    LazyVStack(spacing: 8) {
+                        ForEach(courses) { course in
+                            CourseCard(course: course)
+                        }
+                    }
+                    .padding()
+                }
+                .navigationTitle("Home Bakery")
+                .navigationBarTitleDisplayMode(.inline)
+            }
     }
     }}
 

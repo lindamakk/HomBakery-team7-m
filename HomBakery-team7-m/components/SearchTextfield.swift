@@ -27,5 +27,5 @@ struct SearchTextfield: View {
 
 
 #Preview {
-    SearchTextfield(text: .constant("restaurent"))
+    SearchTextfield(text: .constant(" "))
 }
