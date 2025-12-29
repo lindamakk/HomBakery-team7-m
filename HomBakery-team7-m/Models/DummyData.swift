@@ -13,7 +13,7 @@ let courses: [CourseCardModel] = [
         duration: "2h 30m",
         startDate: "24 Dec 2025",
         imageName: "fortest",
-        level: .Beginner
+        level: .beginner
     ),
     CourseCardModel(
         id: 2,
@@ -22,7 +22,7 @@ let courses: [CourseCardModel] = [
         duration: "3h 15m",
         startDate: "10 Jan 2026",
         imageName: "fortest",
-        level: .Intermediate
+        level: .intermediate
     ),
     CourseCardModel(
         id: 3,
@@ -31,7 +31,7 @@ let courses: [CourseCardModel] = [
         duration: "3h 15m",
         startDate: "10 Jan 2026",
         imageName: "fortest",
-        level: .Intermediate
+        level: .intermediate
     ),
     CourseCardModel(
         id: 4,
@@ -40,7 +40,7 @@ let courses: [CourseCardModel] = [
         duration: "3h 15m",
         startDate: "10 Jan 2026",
         imageName: "fortest",
-        level: .Intermediate
+        level: .intermediate
     ),
     CourseCardModel(
         id: 5,
@@ -49,7 +49,7 @@ let courses: [CourseCardModel] = [
         duration: "3h 15m",
         startDate: "10 Jan 2026",
         imageName: "fortest",
-        level: .Intermediate
+        level: .intermediate
     ),
     CourseCardModel(
         id: 6,
@@ -58,6 +58,6 @@ let courses: [CourseCardModel] = [
         duration: "3h 15m",
         startDate: "10 Jan 2026",
         imageName: "fortest",
-        level: .Advanced
+        level: .advance
     )
 ]

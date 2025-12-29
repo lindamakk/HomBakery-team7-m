@@ -78,7 +78,7 @@ struct CourseCard: View {
         duration: "2h 30m",
         startDate: "24 Dec 2025",
         imageName: "fortest",
-        level: .Beginner
+        level: .beginner
     ))
     
     

@@ -6,40 +6,40 @@
 //
 import SwiftUI
 //enum reteurn title color of title and color of background
-enum Levels :String, Codable {
-    case Beginner
-    case Intermediate
-    case Advanced
-    
-    //title
-        var title: String {
-            rawValue.capitalized
-        }
-    
-    //background color
-    var backColor: Color {
-        switch self {
-        case .Beginner:
-            return Color("brownColor")
-        case .Intermediate:
-            return Color("creamColor")
-        case .Advanced:
-            return Color("AccentColor")
-        }
-    }
-    //text color
-    var textColor: Color {
-        switch self {
-        case .Beginner:
-            return Color.white
-        case .Intermediate:
-            return Color("brownColor")
-        case .Advanced:
-            return Color.white
-        }
-    }
-
-}//end of enum
+//enum Levels :String, Codable {
+//    case Beginner
+//    case Intermediate
+//    case Advanced
+//    
+//    //title
+//        var title: String {
+//            rawValue.capitalized
+//        }
+//    
+//    //background color
+//    var backColor: Color {
+//        switch self {
+//        case .Beginner:
+//            return Color("brownColor")
+//        case .Intermediate:
+//            return Color("creamColor")
+//        case .Advanced:
+//            return Color("AccentColor")
+//        }
+//    }
+//    //text color
+//    var textColor: Color {
+//        switch self {
+//        case .Beginner:
+//            return Color.white
+//        case .Intermediate:
+//            return Color("brownColor")
+//        case .Advanced:
+//            return Color.white
+//        }
+//    }
+//
+//}//end of enum
 
 struct Level: View {
     let levels: Levels
@@ -57,6 +57,6 @@ struct Level: View {
 }
 
 #Preview {
-    Level(levels: .Intermediate)
+    Level(levels: .intermediate)
 
 }
