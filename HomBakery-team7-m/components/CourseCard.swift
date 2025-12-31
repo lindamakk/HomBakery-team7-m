@@ -6,16 +6,30 @@
 //
 import SwiftUI
 struct CourseCard: View {
-    let course: CourseCardModel
+    let course: Courses
     var body: some View {
         HStack(alignment: .top){
             //p1
             VStack{
-                Image(course.imageName)
-                    .resizable()
-                    .scaledToFit()
+                NetworkImage(url: course.fields.imageURL)
                     .frame(width: 94.1, height: 85.34)
                     .cornerRadius(4.5)
+                
+//                AsyncImage(url: URL(string: course.fields.imageURL)) { image in
+//                    image
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fill)
+//                } placeholder: {
+//                    ProgressView()
+//                }   .frame(width: 94.1, height: 85.34)
+//                    .cornerRadius(4.5)
+                    //.clipped()
+
+//                Image(course.fields.imageURL)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 94.1, height: 85.34)
+//                    .cornerRadius(4.5)
                 
             }
             
@@ -25,10 +39,10 @@ struct CourseCard: View {
                 
                 //1
                 VStack(alignment: .leading,spacing:6){
-                    Text(course.title)
+                    Text(course.fields.title)
                         .font(.system(size: 16, weight: .semibold));
                     
-                    Level(levels: course.level)
+                    Level(levels: course.fields.level)
                 }
 
                 //2
@@ -47,9 +61,9 @@ struct CourseCard: View {
                     }
                     VStack( alignment: .leading,spacing:4){
 
-                        Text(course.duration)
+                        Text(course.fields.startDateString)
                             .font(.system(size: 12, weight: .medium));
-                        Text(course.startDate)
+                        Text(course.fields.endDateString)
                             .font(.system(size: 11, weight: .medium));
                     }
                 }
@@ -68,22 +82,22 @@ struct CourseCard: View {
     }//bod
         
 }
-
-#Preview {
-    
-    CourseCard(course: CourseCardModel(
-        id: 1,
-        title: "SwiftUI Basics",
-        description: "Learn the fundamentals",
-        duration: "2h 30m",
-        startDate: "24 Dec 2025",
-        imageName: "fortest",
-        level: .beginner
-    ))
-    
-    
-       // .padding(.horizontal, 16)
-}
+//
+//#Preview {
+//
+//    CourseCard(course: CourseCardModel(
+//        id: 1,
+//        title: "SwiftUI Basics",
+//        description: "Learn the fundamentals",
+//        duration: "2h 30m",
+//        startDate: "24 Dec 2025",
+//        imageName: "fortest",
+//        level: .beginner
+//    ))
+//
+//
+//       // .padding(.horizontal, 16)
+//}
 
 
 struct CourseCardModel: Identifiable, Codable {

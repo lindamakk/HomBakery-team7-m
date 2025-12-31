@@ -8,11 +8,8 @@ import SwiftUI
 
 struct EventCard: View {
 
-    let month: String
-    let day: String
-    let title: String
-    let location: String
-    let time: String
+    let course: Courses
+
     let onTap: () -> Void
 
     var body: some View {
@@ -20,11 +17,11 @@ struct EventCard: View {
 
             // 📅 Date
             VStack(spacing: 4) {
-                Text(month)
+                Text(course.fields.startMonthShort)
                     .font(.headline)
                     .foregroundColor(Color.brown)
 
-                Text(day)
+                Text(course.fields.startDay)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color.brown)
@@ -34,13 +31,13 @@ struct EventCard: View {
             // │ Divider
             Rectangle()
                 .fill(Color.brown)
-                .frame(width: 4,height: 100)
+                .frame(width: 4,height: 60)
                 .cornerRadius(2)
 
             // 🧁 Details
             VStack(alignment: .leading, spacing: 8) {
 
-                Text(title)
+                Text(course.fields.title)
                     .font(.headline)
                     .foregroundColor(.black)
 
@@ -49,7 +46,7 @@ struct EventCard: View {
                         .foregroundColor(.brown)
                         .font(.caption)
 
-                    Text(location)
+                    Text(course.fields.locationName)
                         .font(.subheadline)
                         .foregroundColor(.black)
                 }
@@ -59,7 +56,7 @@ struct EventCard: View {
                         .foregroundColor(.brown)
                         .font(.caption)
 
-                    Text(time)
+                    Text(course.fields.startTime)
                         .font(.subheadline)
                         .foregroundColor(.black)
                 }
@@ -78,14 +75,14 @@ struct EventCard: View {
 }
 
 #Preview {
-    EventCard(
-        month: "Dec",
-        day: "15",
-        title: "Babka dough",
-        location: "Riyadh, Alnarjis",
-        time: "4:00 pm"
-    ) {}
-    .padding()
-    .background(Color.gray.opacity(0.2))
+//    EventCard(
+//        month: "Dec",
+//        day: "15",
+//        title: "Babka dough",
+//        location: "Riyadh, Alnarjis",
+//        time: "4:00 pm"
+//    ) {}
+   // .padding()
+    //.background(Color.gray.opacity(0.2))
 }
 

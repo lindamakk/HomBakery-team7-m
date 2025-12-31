@@ -34,6 +34,7 @@ struct CoursesFields: Codable {
     let description: String
     let imageURL: String
 
+
     enum CodingKeys: String, CodingKey {
         case title
         case level
@@ -45,6 +46,55 @@ struct CoursesFields: Codable {
         case endDate = "end_date"
         case description
         case imageURL = "image_url"
+    }
+}
+
+extension CoursesFields {
+    var startDateFormatted: Date {
+        Date(timeIntervalSince1970: startDate)
+    }
+
+    var endDateFormatted: Date {
+        Date(timeIntervalSince1970: endDate)
+    }
+
+    var startDateString: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: startDateFormatted)
+    }
+
+    var endDateString: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: endDateFormatted)
+    }
+    
+    private var startDateAsDate: Date {
+        Date(timeIntervalSince1970: startDate)
+    }
+    // MARK: - Day (15)
+    var startDay: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd"
+        return formatter.string(from: startDateAsDate)
+    }
+
+    // MARK: - Month (DEC)
+    var startMonthShort: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM"
+        formatter.locale = Locale(identifier: "en_US") // ensures DEC, NOV, OCT
+        return formatter.string(from: startDateAsDate).uppercased()
+    }
+
+    // MARK: - Time (4:00 PM)
+    var startTime: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        return formatter.string(from: startDateAsDate)
     }
 }
 
