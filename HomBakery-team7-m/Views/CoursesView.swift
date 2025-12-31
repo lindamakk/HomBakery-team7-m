@@ -9,35 +9,38 @@ import SwiftUI
 import SwiftData
 
 struct CoursesView: View {
-    
-    
+
+    @StateObject private var loader = CoursesLoader()
+
     var body: some View {
         NavigationStack {
-            VStack () {
- 
+            VStack {
+
+                // 🔍 Search (UI فقط)
                 SearchTextfield(text: .constant("restaurent"))
                     .padding()
-                
-                //i will make for ech print card compnent with date from object i passed from api array
+
+                // 📦 Courses from API
                 ScrollView {
                     LazyVStack(spacing: 8) {
-                        ForEach(courses) { course in
-                            CourseCard(course: course)
+                        ForEach(loader.courses) { course in
+                            CourseCard(
+                                course: mapToCardModel(apiCourse: course)
+                            )
                         }
                     }
                     .padding()
                 }
                 .navigationTitle("Courses")
                 .navigationBarTitleDisplayMode(.inline)
+            }
+        }
+        .onAppear {
+            loader.load()
+        }
+    }
 
-                
-                
-            }//V
-            
-            
-        }//nav
-    }//body
-}//struct
+}
 
 #Preview {
     CoursesView()

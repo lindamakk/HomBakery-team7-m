@@ -21,6 +21,16 @@
 			path = "HomBakery-team7-m";
 			sourceTree = "<group>";
 		};
+		FB95BD722F0514D4001232BA /* helpers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = helpers;
+			sourceTree = "<group>";
+		};
+		FB95BD7A2F0515A3001232BA /* ViewModels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +50,8 @@
 				BFA2E6192EFA7FEA0076BA78 /* HomBakery-team7-m */,
 				BFA2E6182EFA7FEA0076BA78 /* Products */,
 				BFA2E67B2EFD33CF0076BA78 /* Swift.gitignore */,
+				FB95BD722F0514D4001232BA /* helpers */,
+				FB95BD7A2F0515A3001232BA /* ViewModels */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +80,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				BFA2E6192EFA7FEA0076BA78 /* HomBakery-team7-m */,
+				FB95BD722F0514D4001232BA /* helpers */,
+				FB95BD7A2F0515A3001232BA /* ViewModels */,
 			);
 			name = "HomBakery-team7-m";
 			packageProductDependencies = (
