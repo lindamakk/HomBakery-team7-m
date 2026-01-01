@@ -1,14 +1,15 @@
 import SwiftUI
 
-struct BottomSheet: View {
+struct LogInView: View {
 
     @Environment(\.dismiss) private var dismiss
 
     var sheetTitle: String = "Sign in"
+    @StateObject private var viewModel = LoginViewModel()
 
-    @State private var email = ""
-    @State private var password = ""
-//    @State private var isPasswordVisible = false
+//    @Binding private var email : String
+//    @Binding private var password : String
+    @State private var isPasswordVisible = false
 
     var body: some View {
         ZStack {
@@ -57,14 +58,17 @@ struct BottomSheet: View {
              
                     
                     //Email
-                    Textfield(label: "Email",  textInput: "", isPassword: false,)
+                    Textfield(label: "Email",  textInput: $viewModel.email, isPassword: false,)
                     
                     //password
-                    Textfield(label: "Password",  textInput: "", isPassword: true,)
+                    Textfield(label: "Password",  textInput: $viewModel.password, isPassword: true,)
                     
                     
-                    ButtonView(label: "Sign In", action: {})
-
+                    ButtonView(label: "Sign In") {
+                        Task{
+                            await viewModel.login()
+                        }
+                    }
                     Spacer()
                 }
                 .padding(24)
@@ -73,6 +77,7 @@ struct BottomSheet: View {
             }
             .ignoresSafeArea(edges: .bottom)
         }
+
     }
 }
 extension View {
@@ -97,6 +102,6 @@ struct RoundedCorner: Shape {
 // للمعاينة
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        BottomSheet()
+       LogInView()
     }
 }
