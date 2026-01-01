@@ -5,7 +5,6 @@
 //  Created by Linda on 23/12/2025.
 //
 import SwiftUI
-
 struct HomeView: View {
 
     @State private var isExist: Bool = false
@@ -77,3 +76,4 @@ struct HomeView: View {
    .onAppear {       chefsLoader.loadChefs()       }
     }
 }
+
