@@ -10,6 +10,9 @@ import Foundation
 struct UserAndChefResponse: Codable {
     let records: [UserAndChef]
 }
+
+
+
 // MARK: - UserAndChef
 struct UserAndChef: Codable {
     let id: String
