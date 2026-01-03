@@ -28,5 +28,4 @@ struct SearchTextfield: View {
 
 #Preview {
     SearchTextfield(text: .constant(""))
-    
 }

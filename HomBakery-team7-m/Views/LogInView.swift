@@ -100,8 +100,8 @@ struct RoundedCorner: Shape {
     }
 }
 // للمعاينة
-struct SignInView_Previews: PreviewProvider {
-    static var previews: some View {
-       LogInView()
-    }
-}
+//struct SignInView_Previews: PreviewProvider {
+//    static var previews: some View {
+//       LogInView()
+//    }
+//}

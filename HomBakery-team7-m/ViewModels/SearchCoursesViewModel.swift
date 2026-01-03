@@ -8,49 +8,80 @@ import Foundation
 import Combine
 
 class SearchCoursesViewModel: ObservableObject {
-    
+
+    // MARK: - Input
     @Published var searchText: String = ""
-    @Published var results: [Courses] = []   
+
+    // MARK: - Output
+    @Published private(set) var results: [Courses] = []
+    @Published private(set) var isLoading: Bool = false
+    @Published private(set) var errorMessage: String?
+
+    // MARK: - Private
+    private var allCourses: [Courses] = []
     private var cancellables = Set<AnyCancellable>()
 
+    // MARK: - Init
     init() {
+        setupSearch()
+        fetchCourses()
+    }
+
+    // MARK: - Search Logic
+    private func setupSearch() {
         $searchText
-            .debounce(for: .milliseconds(400), scheduler: RunLoop.main)
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .removeDuplicates()
-            .sink { [weak self] value in
-                self?.search(by: value)
+            .sink { [weak self] text in
+                self?.filterCourses(with: text)
             }
             .store(in: &cancellables)
     }
-    func search(by name: String) {
-        guard !name.isEmpty else {
-            DispatchQueue.main.async {
-                self.results=[]
-            }
+
+    private func filterCourses(with text: String) {
+        guard !text.isEmpty else {
+            results = allCourses
             return
         }
-    
-        let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let url = URL(string: "https://api.airtable.com/v0/appXMW3ZsAddTpClm/course\(encodedName)")!
 
+        results = allCourses.filter {
+            $0.fields.title.localizedCaseInsensitiveContains(text)
+        }
+    }
+
+    // MARK: - Fetch
+    private func fetchCourses() {
+        isLoading = true
+        errorMessage = nil
+
+        let url = APIConstants.baseURL.appendingPathComponent("course")
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue(
-            "Bearer YOUR_API_KEY",
-            forHTTPHeaderField: "Authorization"
-        )
+        request.setValue(APIConstants.token, forHTTPHeaderField: "Authorization")
 
-        URLSession.shared.dataTask(with: request) { data, _, _ in
-            guard let data else { return }
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, _ in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+            }
+
+            guard let data else {
+                DispatchQueue.main.async {
+                    self?.errorMessage = "No data received"
+                }
+                return
+            }
 
             do {
                 let decoded = try JSONDecoder().decode(ClassesResponse.self, from: data)
-
                 DispatchQueue.main.async {
-                    self.results = decoded.records
+                    self?.allCourses = decoded.records
+                    self?.results = decoded.records
                 }
             } catch {
-                print("Search error:", error)
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Failed to load courses"
+                }
+                print("Decoding error:", error)
             }
         }.resume()
     }

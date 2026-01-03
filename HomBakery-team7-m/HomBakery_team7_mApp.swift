@@ -18,10 +18,10 @@ struct HomBakery_team7_mApp: App {
         WindowGroup {
             
 //            RootView()
-            LogInView()
-                .task {
-                    await UsersRepository.shared.loadUsersIfNeeded()
-                }
+            TestSearchView()
+//                .task {
+//                    await UsersRepository.shared.loadUsersIfNeeded()
+//                }
 //            ZStack {
 //                if showSplash {
 //                    SplashView()
