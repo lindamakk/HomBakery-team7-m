@@ -8,81 +8,76 @@ import SwiftUI
 
 struct EventCard: View {
 
-    let course: Courses
-
-    let onTap: () -> Void
+    let startDate: TimeInterval
+    let title: String
+    let location: String
+    let time: String
 
     var body: some View {
+        
         HStack(spacing: 16) {
 
-            // 📅 Date
+            // MARK: - Date (Dec / 15)
             VStack(spacing: 4) {
-                Text(course.fields.startMonthShort)
-                    .font(.headline)
-                    .foregroundColor(Color.brown)
+                Text(formattedMonth(from: startDate))
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.brown)
 
-                Text(course.fields.startDay)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.brown)
+                Text(formattedDay(from: startDate))
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(.brown)
             }
             .frame(width: 60)
 
-            // │ Divider
+            // Divider
             Rectangle()
-                .fill(Color.brown)
-                .frame(width: 4,height: 60)
-                .cornerRadius(2)
+                .fill(Color.brown.opacity(0.6))
+                .frame(width: 3, height: 60)
 
-            // 🧁 Details
+            // MARK: - Content
             VStack(alignment: .leading, spacing: 8) {
 
-                Text(course.fields.title)
+                Text(title)
                     .font(.headline)
                     .foregroundColor(.black)
 
                 HStack(spacing: 6) {
-                    Image(systemName: "paperplane.fill")
-                        .foregroundColor(.brown)
-                        .font(.caption)
-
-                    Text(course.fields.locationName)
+                    Image(systemName: "location")
+                        .foregroundColor(.gray)
+                    Text(location)
                         .font(.subheadline)
-                        .foregroundColor(.black)
+                        .foregroundColor(.gray)
                 }
 
                 HStack(spacing: 6) {
                     Image(systemName: "hourglass")
-                        .foregroundColor(.brown)
-                        .font(.caption)
-
-                    Text(course.fields.startTime)
+                        .foregroundColor(.gray)
+                    Text(time)
                         .font(.subheadline)
-                        .foregroundColor(.black)
+                        .foregroundColor(.gray)
                 }
             }
 
             Spacer()
         }
+        .onAppear {
+//                    print("📦 EventCard loaded →", title)
+                }
         .padding()
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 4)
-        .onTapGesture {
-            onTap()
-        }
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.1), radius: 8, y: 4)
+        )
     }
 }
-
 #Preview {
-//    EventCard(
-//        month: "Dec",
-//        day: "15",
-//        title: "Babka dough",
-//        location: "Riyadh, Alnarjis",
-//        time: "4:00 pm"
-//    ) {}
-   // .padding()
-    //.background(Color.gray.opacity(0.2))
+    EventCard(
+        startDate: Date().timeIntervalSince1970,
+        title: "Babka dough",
+        location: "Riyadh, Alnarjis",
+        time: "4:00 PM – 6:00 PM"
+    )
+    .padding()
+    .background(Color(.systemGray6))
 }
-

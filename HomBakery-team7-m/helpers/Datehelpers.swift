@@ -41,3 +41,16 @@ import SwiftUI
         return "\(minutes)m"
     }
 }
+func formattedMonth(from timeInterval: TimeInterval) -> String {
+    let date = Date(timeIntervalSince1970: timeInterval)
+    let formatter = DateFormatter()
+    formatter.dateFormat = "MMM"
+    return formatter.string(from: date)
+}
+
+func formattedDay(from timeInterval: TimeInterval) -> String {
+    let date = Date(timeIntervalSince1970: timeInterval)
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd"
+    return formatter.string(from: date)
+}

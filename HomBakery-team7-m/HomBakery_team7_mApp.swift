@@ -18,8 +18,16 @@ struct HomBakery_team7_mApp: App {
         WindowGroup {
             
 //            RootView()
-            TestSearchView()
-//                .task {
+
+            
+                EventCard(
+                    startDate: Date().timeIntervalSince1970,
+                    title: "Babka dough",
+                    location: "Riyadh, Alnarjis",
+                    time: "4:00 PM – 6:00 PM"
+                )
+            
+            //                .task {
 //                    await UsersRepository.shared.loadUsersIfNeeded()
 //                }
 //            ZStack {
