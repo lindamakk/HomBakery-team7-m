@@ -5,7 +5,7 @@ struct Textfield: View {
     
 
     var label: String // textfeild label
-    @State  var textInput: String = "" // text feild input
+    @Binding  var textInput: String  // text feild input
     var isPassword:  Bool = false // if feild id password
     
     

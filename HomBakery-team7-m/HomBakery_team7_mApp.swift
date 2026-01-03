@@ -12,31 +12,39 @@ import SwiftData
 struct HomBakery_team7_mApp: App {
     
     @State private var showSplash = true
+
+    
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                if showSplash {
-                    SplashView()
-                        .transition(.opacity.combined(with: .scale))
-                } else {
-                    MainTabView()
-                        .transition(.opacity.combined(with: .scale))
+            
+//            RootView()
+            LogInView()
+                .task {
+                    await UsersRepository.shared.loadUsersIfNeeded()
                 }
-            }
-            .animation(.easeInOut(duration: 0.6), value: showSplash)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    showSplash = false
-                }
-            }
+//            ZStack {
+//                if showSplash {
+//                    SplashView()
+//                        .transition(.opacity.combined(with: .scale))
+//                } else {
+//                    MainTabView()
+//                        .transition(.opacity.combined(with: .scale))
+//                }
+//            }
+//            .animation(.easeInOut(duration: 0.6), value: showSplash)
+//            .onAppear {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                    showSplash = false
+//                }
+//            }
            
-        }
+        }//group
         
-    }
+    }//view
     
     
  
-}
+}//class
 
 //            HomeView()
         
