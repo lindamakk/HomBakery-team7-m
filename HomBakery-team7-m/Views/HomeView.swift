@@ -21,11 +21,24 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
 
-                        // 🔹 قائمة الشيفات (GET chefs)
-                        ForEach(chefsLoader.chefs, id: \.id) { chef in
-                            Text(chef.fields.name)
-                                .padding(.horizontal)
-                        }
+//                        // 🔹 Chefs
+//                        Text("Chefs")
+//                            .font(.system(size: 24, weight: .semibold))
+//                            .padding(.horizontal)
+//
+//                        if chefsViewModel.isLoading {
+//                            ProgressView()
+//                                .padding()
+//                        } else if let error = chefsViewModel.errorMessage {
+//                            Text(error)
+//                                .foregroundColor(.red)
+//                                .padding()
+//                        } else {
+//                            ForEach(chefsViewModel.chefs, id: \.id) { chef in
+//                                Text(chef.fields.name)
+//                                    .padding(.horizontal)
+//                            }
+//                        }
 
                         // 🔹 Upcoming
                         Text("Upcoming")
@@ -33,7 +46,7 @@ struct HomeView: View {
                             .padding(.horizontal)
 
                         if isExist {
-
+                            EmptyView()
                         } else {
                             NoBookedCourses()
                         }
@@ -43,37 +56,33 @@ struct HomeView: View {
                             .font(.system(size: 24, weight: .semibold))
                             .padding(.horizontal)
 
-                        LazyVStack(spacing: 8) {
-                            ForEach(courses) { course in
-                                CourseCard(course: course)
-                                    EventCard(course: course, onTap: {})
-                                    .padding(.horizontal)
+                        if coursesViewModel.isLoading {
+                            ProgressView()
+                                .padding()
+                        } else if let error = coursesViewModel.errorMessage {
+                            Text(error)
+                                .foregroundColor(.red)
+                                .padding()
+                        } else {
+                            LazyVStack(spacing: 8) {
+                                ForEach(coursesViewModel.courses) { course in
+                                    CourseCard(course: course)
+                                        .padding(.horizontal)
+                                }
                             }
                         }
-                        .padding()
                     }
+                    .padding(.vertical)
                 }
                 .navigationTitle("Home Bakery")
                 .navigationBarTitleDisplayMode(.inline)
             }
-                    .task {
-            do {
-                courses = try await viewModel.fetchCourses()
-            } catch let error as backeryError {
-                switch error {
-                case .invalidURL:
-                    print("❌ Invalid URL")
-                case .invalidResponseFromServer:
-                    print("❌ Invalid response from server")
-                case .invalidData:
-                    print("❌ Invalid data")
-                }
-            } catch {
-                print("❌ Unexpected error: \(error.localizedDescription)")
-            }
         }
+        .task {
+            // Load data when view appears
+            await chefsViewModel.loadChefs()
+            await coursesViewModel.loadCourses()
         }
-   .onAppear {       chefsLoader.loadChefs()       }
     }
 }
 
