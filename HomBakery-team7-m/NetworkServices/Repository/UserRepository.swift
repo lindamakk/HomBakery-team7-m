@@ -14,6 +14,9 @@ final class UsersRepository: ObservableObject {
     private init() {}
 //i wiil not allow to create instanse just read arr
     @Published private(set) var usersSharedArr: [UserAndChef] = []
+    //shared user id in this variable
+    @Published private(set) var currentUser: UserAndChef?
+
 
     private let service: UserServicing = UserService()
     private var hasFetched = false
@@ -57,6 +60,8 @@ final class UsersRepository: ObservableObject {
 
         // 2️⃣ نتحقق من كلمة المرور
         if user.fields.password == password {
+            //here save user id after i made sure user is loged in
+            currentUser = user
             print("✅ Login success")
             return .success(user: user)
         } else {
@@ -64,4 +69,36 @@ final class UsersRepository: ObservableObject {
             return .wrongPassword
         }
     }
+    
+    func updateCurrentUser(name: String) async throws {
+
+        guard let currentUser = currentUser else {
+            print("❌ No current user!")
+            throw NSError(domain: "No logged user", code: 401)
+        }
+
+//        let updatedFields = UserFields(
+//            name: name,
+//            email: currentUser.fields.email,
+//            password: currentUser.fields.password
+//        )
+//
+//        let updatedUser = UserAndChef(
+//            id: currentUser.id,
+//            fields: updatedFields
+//        )
+
+        let savedUser = try await service.updateUser(user: currentUser , newNameU: name)
+print("after save user")
+        // 🔄 Sync shared state
+        self.currentUser = savedUser
+        print("after save current user")
+        if let index = usersSharedArr.firstIndex(where: { $0.id == savedUser.id }) {
+            usersSharedArr[index] = savedUser
+        }
+    }
+
+
+
+
 }

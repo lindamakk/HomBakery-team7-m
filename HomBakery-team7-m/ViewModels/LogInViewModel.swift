@@ -21,6 +21,8 @@ final class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     @Published var errorMessage: String?
+    @Published var navigateToEditProfile = false   // ⭐
+
 
     func login() async {
         let result = UsersRepository.shared.login(
@@ -31,6 +33,10 @@ final class LoginViewModel: ObservableObject {
         switch result {
         case .success(let user):
             print("Welcome \(user.fields.name)")
+            navigateToEditProfile = true   // ✅ trigger navigation
+            print("navigateToEditProfile =", navigateToEditProfile)
+
+
             errorMessage = nil
 
         case .emailNotFound:
@@ -44,17 +50,17 @@ final class LoginViewModel: ObservableObject {
 
 
 //class UserService {
-//    
+//
 //    func fetchUsers() async throws -> [UserAndChef] {
 //        let endPoint = ""
 //        guard let url = URL(string: endPoint) else { throw userError.invalidURL }
 //
 //        var request = URLRequest(url: url)
 //        request.httpMethod = "GET"
-//        
+//
 //        // Add Airtable API key (replace YOUR_API_KEY)
 //        request.setValue("", forHTTPHeaderField: "Authorization")
-//        
+//
 //        // Optional: set JSON content type
 //        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 //
@@ -68,7 +74,7 @@ final class LoginViewModel: ObservableObject {
 //        do {
 //            let decoder = JSONDecoder()
 //            return try decoder.decode(UserAndChefResponse.self, from: data).records
-//            
+//
 //        } catch {
 //            throw userError.invalidData
 //        }
@@ -79,7 +85,7 @@ final class LoginViewModel: ObservableObject {
 //        case invalidResponseFromServer
 //        case invalidData
 //
-//        
+//
 //    }//enum
 //
 //}

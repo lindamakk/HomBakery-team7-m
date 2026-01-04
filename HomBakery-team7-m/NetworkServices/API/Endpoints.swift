@@ -8,15 +8,16 @@
 enum Endpoint {
     case chef
     case user
+    case userID(id: Int)
     case course
     case courseId(id: Int)
     case booking
     case bookingId(id: Int)
-
     var path: String {
         switch self {
         case .chef: return "/chef"
         case .user: return "/user"
+        case .userID(let id): return "/user/\(id)"
         case .course: return "/course"
         case .courseId(let id): return "/course/\(id)"
         case .booking: return "/booking"

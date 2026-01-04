@@ -1,51 +1,36 @@
-//
-//  Untitled.swift
-//  HomBakery-team7-m
-//
-//  Created by Linda on 23/12/2025.
-//
+
 import SwiftUI
-import SwiftData
 
 struct ProfileView: View {
+    @StateObject private var viewModel = EditProfileViewModel()
+
     var body: some View {
         NavigationStack {
-            ZStack {
-                Color("AppBackground")
-                    .ignoresSafeArea()
+            ScrollView {
+                VStack(spacing: 24) {
+                    ProfileCard(
+                        name: $viewModel.name,
+                        isEditing: $viewModel.isEditing,
+                        onEditToggle: { viewModel.toggleEditing() },
+                        onSave: {print("Pressed Done button")
+                            Task { await viewModel.saveChanges() }
+                        }
+                    )
 
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
+                    Divider()
+                    Text("Booked courses")
+                        .font(.system(size: 24, weight: .semibold))
+                        .padding(.top, 4)
 
-                        // Profile section
-                        ProfileCard()
-                        
-
-                        
-                        Divider()
-                        
-                        // Booked courses title
-                        Text("Booked courses")
-                            .font(.system(size: 24, weight: .semibold))
-                            .padding(.top, 4)
-
-                        // Empty state (centered look)
-                        NoBookedCourses()
-                            .frame(maxWidth: .infinity)
-                            .padding(.top, 24)
-
-                        Spacer(minLength: 80)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 12)
+                    NoBookedCourses()
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 24)
                 }
+                .padding()
             }
+            .background(Color("AppBackground").ignoresSafeArea())
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
-}
-
-#Preview {
-    ProfileView()
 }
