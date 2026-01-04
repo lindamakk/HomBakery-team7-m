@@ -10,7 +10,8 @@ struct HomeView: View {
     @State private var isExist = false
     @StateObject private var chefsViewModel = ChefsViewModel()
     @StateObject private var coursesViewModel = CoursesViewModel()
-    
+    @StateObject private var bookingViewModel = BookingViewModel()
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -76,6 +77,7 @@ struct HomeView: View {
         .task {
             await chefsViewModel.loadChefs()
             await coursesViewModel.loadCourses()
+            await bookingViewModel.loadBooking()
         }
     }
 }
