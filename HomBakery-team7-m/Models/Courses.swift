@@ -16,13 +16,13 @@ struct ClassesResponse: Codable {
 
 
 
-struct Courses: Codable, Identifiable {
+struct Courses: Codable, Identifiable, Hashable {
     let id: String
     let createdTime: String
     let fields: CoursesFields
 }
 ////diffrent name between api and swift handle here
-struct CoursesFields: Codable {
+struct CoursesFields: Codable, Hashable {
     let title: String
     let level: Levels
     let locationName: String
@@ -60,15 +60,15 @@ extension CoursesFields {
 
     var startDateString: String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
+        // "d" = day, "MMM" = short month, "h:mm a" = 12h time with AM/PM
+        formatter.dateFormat = "d MMM - h:mm a"
+        formatter.locale = Locale(identifier: "en_US") // Ensures English month names
         return formatter.string(from: startDateFormatted)
     }
-
     var endDateString: String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
+        formatter.dateFormat = "d MMM - h:mm a"
+        formatter.locale = Locale(identifier: "en_US") // Ensures English month names
         return formatter.string(from: endDateFormatted)
     }
     
@@ -103,7 +103,7 @@ extension CoursesFields {
 
 //levellllllss
 
-enum Levels: String, Codable {
+enum Levels: String, Codable, Hashable {
     case beginner
     case intermediate
     case advance

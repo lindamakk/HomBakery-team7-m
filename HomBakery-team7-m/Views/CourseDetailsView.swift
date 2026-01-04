@@ -9,8 +9,9 @@ import SwiftUI
 import MapKit
 
 struct CourseDetailsView: View {
+    var selectedCourse: Courses
     
-    var courseName: String = "Babka dough"
+    
     var body: some View {
         ZStack {
             Color("AppBackground").ignoresSafeArea()
@@ -18,13 +19,9 @@ struct CourseDetailsView: View {
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    AsyncImage(url: URL(string: "https://picsum.photos/200/300")) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        ProgressView()
-                    }
+                    NetworkImage(url: selectedCourse.fields.imageURL)
+                        .cornerRadius(4.5)
+                
                     .frame(height: 275)
                     .frame(maxWidth: .infinity)
                     .clipped()
@@ -37,14 +34,20 @@ struct CourseDetailsView: View {
                         
                         Spacer().frame(height: 10)
                         
-                        Text("Needless to say, you will learn new techniques...")
+                        Text(selectedCourse.fields.description)
                             .font(.subheadline)
 
                         Spacer().frame(height: 24)
                         Divider()
                         Spacer().frame(height: 24)
                         
-                        CourseDetailsTable()
+                        CourseDetailsTable(
+                            chefName: "chef",
+                                level: selectedCourse.fields.level,
+                            duration: "2h",
+                            dateTime: selectedCourse.fields.startDateString,
+                            location: selectedCourse.fields.locationName
+                        )
                         
                         Spacer().frame(height: 32)
                         
@@ -60,10 +63,10 @@ struct CourseDetailsView: View {
                 }
             }
         }
-        .navigationTitle(courseName)
+        .navigationTitle(selectedCourse.fields.title)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-#Preview {
-    CourseDetailsView()
-}
+//#Preview {
+//    CourseDetailsView()
+//}
