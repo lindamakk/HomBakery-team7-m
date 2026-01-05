@@ -33,10 +33,13 @@ struct CoursesView: View {
                             ProgressView()
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                        } else if let error = coursesViewModel.errorMessage {
-                            Text(error)
-                                .foregroundColor(.red)
-                                .padding()
+                        }    else if let error = coursesViewModel.errorMessage {
+                            ErrorCoursesView {
+                                Task {
+                                    await coursesViewModel.loadCourses()
+                                }
+                            }
+                        
                         } else {
                             LazyVStack(spacing: 8) {
                                 ForEach(coursesViewModel.courses) { course in
