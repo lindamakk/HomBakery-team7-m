@@ -5,13 +5,14 @@
 //  Created by Linda on 23/12/2025.
 //
 import SwiftUI
-import SwiftUI
-
 struct HomeView: View {
 
-    @State private var isExist = false
-    @StateObject private var chefsViewModel = ChefsViewModel()
-    @StateObject private var coursesViewModel = CoursesViewModel()
+    @State private var isExist: Bool = false
+    @StateObject var chefsLoader = ChefsViewModel()
+    @State private var courses: [Courses] = []
+    @StateObject private var coursesVM = CoursesViewModel()
+
+    private var viewModel = CourseService()
 
     var body: some View {
         ZStack {
@@ -57,16 +58,16 @@ struct HomeView: View {
                             .font(.system(size: 24, weight: .semibold))
                             .padding(.horizontal)
 
-                        if coursesViewModel.isLoading {
+                        if  coursesVM.isLoading {
                             ProgressView()
                                 .padding()
-                        } else if let error = coursesViewModel.errorMessage {
+                        } else if let error = coursesVM.errorMessage {
                             Text(error)
                                 .foregroundColor(.red)
                                 .padding()
                         } else {
                             LazyVStack(spacing: 8) {
-                                ForEach(coursesViewModel.courses) { course in
+                                ForEach(coursesVM.courses) { course in
                                     CourseCard(course: course)
                                         .padding(.horizontal)
                                 }
@@ -81,8 +82,9 @@ struct HomeView: View {
         }
         .task {
             // Load data when view appears
-            await chefsViewModel.loadChefs()
-            await coursesViewModel.loadCourses()
+            await chefsLoader.loadChefs()
+            await coursesVM.loadCourses()
         }
     }
 }
+

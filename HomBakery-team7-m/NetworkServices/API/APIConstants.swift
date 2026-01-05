@@ -7,8 +7,11 @@
 
 import Foundation
 //replase with api url/token string BUT DONT FORGET TO REMOVE IT BEFORE COMMITING UR CHANGES
-enum APIConstants {
-    static let baseURL = URL(string: "")!
-    static let token = ""
 
-}
+enum APIConstants {
+
+    static let baseURL = URL(string: "")!
+
+    // 👈 لازم تكون قيمة فعلية
+    static let token = ""}
+
