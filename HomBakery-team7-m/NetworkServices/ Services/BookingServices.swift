@@ -14,9 +14,12 @@ protocol BookingServicing {
     
     func addBooking(by id: String) async throws -> Booking?
     func deleteBooking(by id: String) async throws -> DeleteBookingResponse?
+
 }
 
 final class BookingService: BookingServicing {
+
+    
 
     private let networkManager: NetworkManaging
 
@@ -28,17 +31,20 @@ final class BookingService: BookingServicing {
         .appendingPathComponent(Endpoint.booking.path)
     
     // 1. Fetch all bookings
-    func fetchBooking() async throws -> [Booking] { // Changed return type to [Booking] to match implementation
+    func fetchBooking() async throws -> [Booking] {
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(APIConstants.token, forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        // We decode the wrapper (BookingResponse) then return the records array
+        print("fetching booking from api")
+
         let response: BookingResponse = try await networkManager.request(request)
+
+
         return response.records
     }
-    
     // 2. Add booking for a specific course
     func addBooking(by courseId: String) async throws -> Booking? {
         // Create request to the BASE url (not appending ID for POST)

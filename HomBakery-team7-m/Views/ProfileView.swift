@@ -3,7 +3,8 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject private var viewModel = EditProfileViewModel()
-
+    @StateObject private var bookingViewModel = BookingViewModel()
+    @StateObject private var coursesViewModel = CoursesViewModel()
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -22,9 +23,26 @@ struct ProfileView: View {
                         .font(.system(size: 24, weight: .semibold))
                         .padding(.top, 4)
 
-                    NoBookedCourses()
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 24)
+                    if bookingViewModel.bookedCourses.isEmpty {
+                        NoBookedCourses()
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 24)
+                    } else {
+                        LazyVStack(spacing: 12) {
+                            ForEach(bookingViewModel.bookedCourses) { course in
+                                EventCard(
+                                    startDate: TimeInterval(course.fields.startDate),
+                                    title: course.fields.title,
+                                    location: course.fields.locationName,
+                                    time: formattedTime(
+                                        start: TimeInterval(course.fields.startDate),
+                                        end: TimeInterval(course.fields.endDate)
+                                    )
+                                )
+                            }
+                        }
+                        .padding(.top, 12)
+                    }
                 }
                 .padding()
             }
@@ -32,5 +50,11 @@ struct ProfileView: View {
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
         }
-    }
+        .task {
+            await coursesViewModel.loadCourses()
+            await bookingViewModel.getUserBooking(
+                userID: "recWNhwQMScGcvSKs", // لاحقًا تجي من UserRepository
+                allCourses: coursesViewModel.courses
+            )
+        }}
 }

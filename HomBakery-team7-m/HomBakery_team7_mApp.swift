@@ -20,7 +20,7 @@ struct HomBakery_team7_mApp: App {
 //            RootView()
 
             
-            TestSearchView()
+            MainTabView()
             
             //                .task {
 //                    await UsersRepository.shared.loadUsersIfNeeded()

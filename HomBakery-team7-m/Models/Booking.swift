@@ -22,8 +22,8 @@ struct Booking: Codable {
 // MARK: - Fields
 struct BookingFields: Codable {
     let courseid: String?
-    let userID: String
-    let   status: String
+    let userID: String?
+    let status: String?
 
     enum CodingKeys: String, CodingKey {
         case courseid
@@ -31,8 +31,6 @@ struct BookingFields: Codable {
         case status
     }
 }
-
-
 struct DeleteBookingResponse: Codable {
     let deleted, id: String
 }

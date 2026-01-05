@@ -12,9 +12,13 @@ import Combine
 final class BookingViewModel: ObservableObject {
 
     @Published var bookings: [Booking] = []
+    @Published var bookedCourses: [Courses] = []
+    @Published var useBookings: [Booking] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     private let bookingService: BookingServicing
+    
+ 
     
     init(bookingService: BookingServicing = BookingService()) {
         self.bookingService = bookingService
@@ -29,6 +33,7 @@ final class BookingViewModel: ObservableObject {
             
             bookings = try await bookingService.fetchBooking()
             
+            
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -36,7 +41,35 @@ final class BookingViewModel: ObservableObject {
         isLoading = false
     }
     
-//    
+    
+    func getUserBooking(
+        userID: String,
+        allCourses: [Courses]
+    ) async {
+
+        await loadBooking()
+
+        // 1️⃣ فلترة bookings حسب اليوزر
+        let userBookings = bookings.filter {
+            $0.fields.userID == userID
+        }
+
+        print("🎟 User bookings:", userBookings.count)
+
+        // 2️⃣ استخراج course IDs
+        let courseIDs = userBookings.compactMap { $0.fields.courseid }
+
+        print("🆔 Course IDs:", courseIDs)
+
+        // 3️⃣ مطابقة مع courses
+        bookedCourses = allCourses.filter {
+            courseIDs.contains($0.id)
+        }
+
+        print("📚 Booked courses:", bookedCourses.count)
+    }
+
+//
 //    func loadCoursesById(by id: String) async {
 //        isLoading = true
 //        errorMessage = nil
@@ -52,3 +85,4 @@ final class BookingViewModel: ObservableObject {
 //    
     
 }
+    

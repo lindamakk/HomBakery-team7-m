@@ -7,7 +7,6 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var isExist = false
     @StateObject private var chefsViewModel = ChefsViewModel()
     @StateObject private var coursesViewModel = CoursesViewModel()
     @StateObject private var bookingViewModel = BookingViewModel()
@@ -20,18 +19,27 @@ struct HomeView: View {
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
-                        
-                   
                         Text("Upcoming")
                             .font(.system(size: 24, weight: .semibold))
                             .padding(.horizontal)
-                        
-                        if isExist {
-                            EmptyView()
+                        if let firstCourse = bookingViewModel.bookedCourses.first {
+                            EventCard(
+                                startDate: TimeInterval(firstCourse.fields.startDate),
+                                title: firstCourse.fields.title,
+                                location: firstCourse.fields.locationName,
+                                time: formattedTime(
+                                    start: TimeInterval(firstCourse.fields.startDate),
+                                    end: TimeInterval(firstCourse.fields.endDate)
+                                )
+                            )
                         } else {
                             NoBookedCourses()
                                 .frame(maxWidth: .infinity, alignment: .center)
                         }
+                      
+                        
+                        
+                     
                         
                         // 🔹 Popular courses
                         Text("Popular courses")
@@ -78,6 +86,12 @@ struct HomeView: View {
             await chefsViewModel.loadChefs()
             await coursesViewModel.loadCourses()
             await bookingViewModel.loadBooking()
+            await coursesViewModel.loadCourses()
+                await bookingViewModel.getUserBooking(
+                    userID: "recWNhwQMScGcvSKs",
+                    allCourses: coursesViewModel.courses
+                )
+            }
         }
     }
-}
+
