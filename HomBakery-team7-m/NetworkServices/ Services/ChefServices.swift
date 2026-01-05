@@ -19,12 +19,12 @@ final class ChefService: ChefServicing {
         self.networkManager = networkManager
     }
 
-    
+    let url = APIConstants.baseURL
+        .appendingPathComponent(Endpoint.chef.path)
     //fetch all chefs
     func fetchChefs() async throws -> [UserAndChef] {
         // Build the URL
-        let url = APIConstants.baseURL
-            .appendingPathComponent("chefs") // Replace with your actual endpoint path
+   
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -37,8 +37,7 @@ final class ChefService: ChefServicing {
     }
     //fetch chef by id
     func fetchChef(by id: String) async throws -> UserAndChef? {
-        let url = APIConstants.baseURL
-            .appendingPathComponent("chefs")
+        let url = url
             .appendingPathComponent(id)
 
         var request = URLRequest(url: url)

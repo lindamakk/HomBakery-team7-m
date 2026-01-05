@@ -8,6 +8,7 @@ import Foundation
 
 protocol CourseServicing {
     func fetchCourses() async throws -> [Courses]
+    func fetchCourseByID(by id: String) async throws -> Courses?
 }
 
 final class CourseService: CourseServicing {
@@ -17,11 +18,11 @@ final class CourseService: CourseServicing {
     init(networkManager: NetworkManaging = NetworkManager()) {
         self.networkManager = networkManager
     }
+    
+    let url = APIConstants.baseURL
+        .appendingPathComponent(Endpoint.course.path)
 //fetcha all courses
     func fetchCourses() async throws -> [Courses] {
-
-        let url = APIConstants.baseURL
-            .appendingPathComponent(Endpoint.course.path)
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -34,18 +35,18 @@ final class CourseService: CourseServicing {
     
     
     //fetch course by id
-//    func fetchCourseByID(id: String) async throws -> Courses {
-
-//        let url = APIConstants.baseURL
-//            .appendingPathComponent(Endpoint.course.path)
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//        request.setValue(APIConstants.token, forHTTPHeaderField: "Authorization")
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//
-//        let response: ClassesResponse = try await networkManager.request(request)
-//        return response.records
-//    }
+    func fetchCourseByID(by id: String) async throws -> Courses? {
+        let url = url
+            .appendingPathComponent(id)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(APIConstants.token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let response: Courses = try await networkManager.request(request)
+        
+        
+        return response
+    }
     
 }

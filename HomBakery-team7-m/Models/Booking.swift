@@ -9,7 +9,7 @@
 import Foundation
 
 // MARK: - Welcome
-struct Welcome: Codable {
+struct BookingResponse: Codable {
     let records: [Booking]
 }
 
@@ -23,11 +23,16 @@ struct Booking: Codable {
 struct BookingFields: Codable {
     let courseid: String?
     let userID: String
-       // status: String
+    let   status: String
 
     enum CodingKeys: String, CodingKey {
         case courseid
         case userID = "user_id"
-        //case status
+        case status
     }
+}
+
+
+struct DeleteBookingResponse: Codable {
+    let deleted, id: String
 }

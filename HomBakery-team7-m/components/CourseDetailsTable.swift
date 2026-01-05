@@ -1,64 +1,42 @@
-
-
 import SwiftUI
 
-
 struct CourseDetailsTable: View {
-    
     var chefName: String = "-"
-    var level: String = "-"
+    let level: Levels
     var duration: String = "-"
     var dateTime: String = "-"
     var location: String = "-"
+    
     var body: some View {
-        Grid(verticalSpacing: 10) {
+        
+        Grid(alignment: .leading, horizontalSpacing: 20, verticalSpacing: 12) {
             
+            // Row 1: Chef (Spans across)
             GridRow {
-                HStack {
-                    Text("Chef:").bold()
-                    Text(chefName)
-                    Spacer()
-                }
-                .gridCellColumns(3)
+                Text("Chef:").bold()
+                Text(chefName)
+                    .gridCellColumns(3) // Allows name to take up the rest of the row
             }
             
-            
+            // Row 2: Level and Duration
             GridRow {
-                HStack {
-                    Text("Level:").bold()
-                    Text(level)
-                }
-                .gridColumnAlignment(.leading)
+                Text("Level:").bold()
+                Level(levels: level)
                 
-                Spacer()
-                
-                HStack {
-                    Text("Duration:").bold()
-                    Text(duration)
-                }
+                Text("Duration:").bold()
+                Text(duration)
             }
             
-         
+            // Row 3: Date and Location
             GridRow {
-                HStack {
-                    Text("Date & time:").bold()
-                    Text(dateTime)
-                }
+                Text("Date & time:").bold()
+                Text(dateTime)
                 
-                Spacer()
-                
-                HStack {
-                    Text("Location:").bold()
-                    Text(location)
-                }
+                Text("Location:").bold()
+                Text(location)
             }
         }
-        .frame(maxWidth: .infinity)
-        .padding()
+        .font(.system(size: 14))
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
-}
-
-
-#Preview {
-    CourseDetailsTable()
 }
