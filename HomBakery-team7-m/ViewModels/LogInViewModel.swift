@@ -9,19 +9,16 @@
 import Foundation
 import SwiftUI
 import Combine
-enum LoginResult {
-    case success(user: UserAndChef)
-    case emailNotFound
-    case wrongPassword
-}
+
 
 @MainActor
 final class LoginViewModel: ObservableObject {
 
     @Published var email = ""
     @Published var password = ""
-    @Published var errorMessage: String?
-    @Published var navigateToEditProfile = false   // ⭐
+    //@Published var errorMessage: String?
+    @Published var error: AppError?
+    @Published var navigateToEditProfile = false
 
 
     func login() async {
@@ -33,17 +30,15 @@ final class LoginViewModel: ObservableObject {
         switch result {
         case .success(let user):
             print("Welcome \(user.fields.name)")
-            navigateToEditProfile = true   // ✅ trigger navigation
+            error = nil
+            navigateToEditProfile = true   // trigger navigation
             print("navigateToEditProfile =", navigateToEditProfile)
 
-
-            errorMessage = nil
-
         case .emailNotFound:
-            errorMessage = "Email not found"
+            error = .emailNotFound
 
         case .wrongPassword:
-            errorMessage = "Incorrect password"
+            error = .wrongPassword
         }
     }
 }

@@ -50,6 +50,7 @@ struct HomeView: View {
                             EmptyView()
                         } else {
                             NoBookedCourses()
+                                .frame(maxWidth: .infinity,alignment: .center)
                         }
 
                         // 🔹 Popular courses

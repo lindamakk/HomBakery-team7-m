@@ -66,6 +66,9 @@ final class UserService: UserServicing {
         let response: UserAndChefResponse = try await networkManager.request(request)
         return response.records.first
     }
+    
+    
+    
     func updateUser(user: UserAndChef, newNameU: String) async throws -> UserAndChef {
         let url = APIConstants.baseURL
             .appendingPathComponent("user")

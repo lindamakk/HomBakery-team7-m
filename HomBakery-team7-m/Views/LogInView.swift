@@ -75,6 +75,13 @@ struct LogInView: View {
                 }
                 .ignoresSafeArea(edges: .bottom)
             }
+            .alert(item: $viewModel.error) { error in
+                Alert(
+                    title: Text("Error"),
+                    message: Text(error.localizedDescription),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
 
             // ✅ MUST be inside NavigationStack
             .navigationDestination(

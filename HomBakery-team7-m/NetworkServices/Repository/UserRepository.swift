@@ -51,8 +51,7 @@ final class UsersRepository: ObservableObject {
 //    }
     
     func login(email: String, password: String) -> LoginResult {
-
-        // 1️⃣ نبحث عن المستخدم بالإيميل
+//serch for email
         guard let user = user(email: email) else {
             print("❌ Email not found")
             return .emailNotFound
