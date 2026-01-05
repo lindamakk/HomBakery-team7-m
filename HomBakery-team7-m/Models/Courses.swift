@@ -51,11 +51,11 @@ struct CoursesFields: Codable, Hashable {
 
 extension CoursesFields {
     var startDateFormatted: Date {
-        Date(timeIntervalSince1970: startDate)
+        Date(timeIntervalSince1970: TimeInterval(startDate))
     }
 
     var endDateFormatted: Date {
-        Date(timeIntervalSince1970: endDate)
+        Date(timeIntervalSince1970: TimeInterval(endDate))
     }
 
     var startDateString: String {
@@ -73,7 +73,7 @@ extension CoursesFields {
     }
     
     private var startDateAsDate: Date {
-        Date(timeIntervalSince1970: startDate)
+        Date(timeIntervalSince1970: TimeInterval(startDate))
     }
     // MARK: - Day (15)
     var startDay: String {
