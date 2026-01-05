@@ -14,8 +14,6 @@ final class CoursesViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var selectedCourse: Courses?
-    
-    
     private let courseService: CourseServicing
 
     init(courseService: CourseServicing = CourseService()) {
@@ -37,21 +35,44 @@ final class CoursesViewModel: ObservableObject {
     
     
     func loadCoursesById(by id: String) async {
-        
-        
         isLoading = true
         errorMessage = nil
 
         do {
             selectedCourse = try await courseService.fetchCourseByID(by: id)
-            
         } catch {
             errorMessage = error.localizedDescription
         }
 
         isLoading = false
     }
+    @MainActor
+    final class CoursesViewModel: ObservableObject {
+
+        @Published var courses: [Courses] = []
+        @Published var isLoading = false
+        @Published var errorMessage: String?
+        
+        private let courseService: CourseServicing
+
+        init(courseService: CourseServicing = CourseService()) {
+            self.courseService = courseService
+        }
+
+        func loadCourses() async {
+            isLoading = true
+            errorMessage = nil
+
+            do {
+                courses = try await courseService.fetchCourses()
+            } catch {
+                errorMessage = "Something went wrong. Please try again."
+            }
+
+            isLoading = false
+        }
+    }
 
     
-    
 }
+
