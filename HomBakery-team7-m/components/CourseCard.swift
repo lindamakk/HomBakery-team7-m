@@ -47,7 +47,7 @@ struct CourseCard: View {
                     }
                     VStack( alignment: .leading,spacing:4){
                         
-                        Text(course.fields.startDateString)
+                        Text(course.fields.durationString)
                             .font(.system(size: 12, weight: .medium));
                         Text(course.fields.endDateString)
                             .font(.system(size: 11, weight: .medium));

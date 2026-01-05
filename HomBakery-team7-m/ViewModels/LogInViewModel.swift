@@ -9,22 +9,14 @@
 import Foundation
 import SwiftUI
 import Combine
-enum LoginResult {
-    case success(user: UserAndChef)
-    case emailNotFound
-    case wrongPassword
-}
-
 @MainActor
 final class LoginViewModel: ObservableObject {
 
     @Published var email = ""
     @Published var password = ""
-    @Published var errorMessage: String?
-    @Published var navigateToEditProfile = false   // ⭐
+    @Published var error: AppError?
 
-
-    func login() async {
+    func login() async -> Bool {
         let result = UsersRepository.shared.login(
             email: email,
             password: password
@@ -33,20 +25,52 @@ final class LoginViewModel: ObservableObject {
         switch result {
         case .success(let user):
             print("Welcome \(user.fields.name)")
-            navigateToEditProfile = true   // ✅ trigger navigation
-            print("navigateToEditProfile =", navigateToEditProfile)
-
-
-            errorMessage = nil
+            error = nil
+            return true  // ✅ success
 
         case .emailNotFound:
-            errorMessage = "Email not found"
+            error = .emailNotFound
+            return false
 
         case .wrongPassword:
-            errorMessage = "Incorrect password"
+            error = .wrongPassword
+            return false
         }
     }
 }
+
+//
+//@MainActor
+//final class LoginViewModel: ObservableObject {
+//
+//    @Published var email = ""
+//    @Published var password = ""
+//    //@Published var errorMessage: String?
+//    @Published var error: AppError?
+//    @Published var navigateToEditProfile = false
+//
+//
+//    func login() async -> Bool{
+//        let result = UsersRepository.shared.login(
+//            email: email,
+//            password: password
+//        )
+//
+//        switch result {
+//        case .success(let user):
+//            print("Welcome \(user.fields.name)")
+//            error = nil
+//            navigateToEditProfile = true   // trigger navigation
+//            print("navigateToEditProfile =", navigateToEditProfile)
+//
+//        case .emailNotFound:
+//            error = .emailNotFound
+//
+//        case .wrongPassword:
+//            error = .wrongPassword
+//        }
+//    }
+//}
 
 
 //class UserService {

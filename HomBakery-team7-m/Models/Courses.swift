@@ -96,6 +96,29 @@ extension CoursesFields {
         formatter.dateFormat = "h:mm a"
         return formatter.string(from: startDateAsDate)
     }
+    /// Duration in seconds
+    private var durationInSeconds: TimeInterval {
+        endDate - startDate
+    }
+
+    /// Duration in hours (Double)
+    var durationInHours: Double {
+        durationInSeconds / 3600
+    }
+
+    /// Formatted duration text
+    var durationString: String {
+        let hours = durationInHours
+
+        if hours < 1 {
+            let minutes = Int(hours * 60)
+            return "\(minutes) min"
+        } else if hours.truncatingRemainder(dividingBy: 1) == 0 {
+            return "\(Int(hours)) h"
+        } else {
+            return String(format: "%.1f h", hours)
+        }
+    }
 }
 
 

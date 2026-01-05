@@ -11,8 +11,8 @@ final class EditProfileViewModel: ObservableObject {
     @Published var isEditing: Bool = false
     @Published var isSaving: Bool = false
     @Published var name: String = ""
-    @Published var errorMessage: String?
-    @Published var isSuccess = false
+    @Published var error: AppError?
+    @Published var showSuccess = false
 
 //    func saveChanges() async {
 //        do {            print("done change namemmmmmmmmmmmmm")
@@ -27,6 +27,16 @@ final class EditProfileViewModel: ObservableObject {
 //        }
 //    }
     
+    //load user name so it can apper on screen
+    func loadUser() {
+        guard let user = UsersRepository.shared.currentUser else {
+            print("❌ No current user")
+            return
+        }
+
+        name = user.fields.name   // ⭐ populate text field
+        print("👤 Loaded user name:", name)
+    }
     
     func toggleEditing() {
         isEditing.toggle()
@@ -34,18 +44,31 @@ final class EditProfileViewModel: ObservableObject {
 
 
     func saveChanges() async {
-       // guard isEditing else { return }
+       // prevent empty name
+        
+        guard !name.trimmingCharacters(in: .whitespaces).isEmpty else {
+            error = .unknown
+            return
+        }
+        
         isSaving = true
         print("Saving name:", name)
         do {
             //for debug
             print("Saving name:", name)
             try await UsersRepository.shared.updateCurrentUser(name: name)
-            errorMessage = nil
+            showSuccess = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.showSuccess = false
+            }
+            error = nil
             print("✅ name updated")
         } catch {
             print("❌ Save failed:", error)
-            errorMessage = "Failed to save"
+            self.error = .networkError
+
+
+            //errorMessage = "Failed to save"
         }
         isSaving = false
         isEditing = false
