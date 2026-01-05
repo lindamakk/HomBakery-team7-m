@@ -13,6 +13,7 @@ struct CoursesView: View {
     @State private var isExist = false
     @StateObject private var chefsViewModel = ChefsViewModel()
     @StateObject private var coursesViewModel = CoursesViewModel()
+
     
     @State private var searchText = ""
     @State private var chefName = ""

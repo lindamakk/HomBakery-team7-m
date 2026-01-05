@@ -12,8 +12,8 @@ protocol BookingServicing {
     // Change this to return the array of Bookings
     func fetchBooking() async throws -> [Booking]
     
-    func addBooking(by courseId: String,  by userId: String) async throws -> Booking?
-    func deleteBooking(by courseId: String) async throws -> DeleteBookingResponse?
+    func createBooking(by courseId: String,  by userId: String) async throws -> Booking?
+    func deleteBooking(by bookingID: String) async throws -> DeleteBookingResponse?
 }
 
 final class BookingService: BookingServicing {
@@ -36,11 +36,12 @@ final class BookingService: BookingServicing {
 
         // We decode the wrapper (BookingResponse) then return the records array
         let response: BookingResponse = try await networkManager.request(request)
+    
         return response.records
     }
     
     // 2. Add booking for a specific course
-    func addBooking(by courseId: String, by userId: String) async throws -> Booking? {
+    func createBooking(by courseId: String, by userId: String) async throws -> Booking? {
         // Create request to the BASE url (not appending ID for POST)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -63,15 +64,18 @@ final class BookingService: BookingServicing {
     }
     
     // 3. Delete booking
-    func deleteBooking(by id: String) async throws -> DeleteBookingResponse? {
-        // Appending the specific ID to delete that specific record
-        let deleteURL = url.appendingPathComponent(id)
-
+    func deleteBooking(by bookingID: String) async throws -> DeleteBookingResponse? {
+        let deleteURL = url.appendingPathComponent(bookingID)
+print(bookingID)
         var request = URLRequest(url: deleteURL)
         request.httpMethod = "DELETE"
         request.setValue(APIConstants.token, forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        return try await networkManager.request(request)
+        // We decode the response to make sure the request was successful
+        let response: DeleteBookingResponse = try await networkManager.request(request)
+        return response
+        print("Airtable confirmed deletion for ID: \(response.id)")
     }
+    
 }
