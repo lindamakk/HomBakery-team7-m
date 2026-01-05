@@ -46,6 +46,33 @@ final class CoursesViewModel: ObservableObject {
 
         isLoading = false
     }
-    
+    @MainActor
+    final class CoursesViewModel: ObservableObject {
+
+        @Published var courses: [Courses] = []
+        @Published var isLoading = false
+        @Published var errorMessage: String?
+        
+        private let courseService: CourseServicing
+
+        init(courseService: CourseServicing = CourseService()) {
+            self.courseService = courseService
+        }
+
+        func loadCourses() async {
+            isLoading = true
+            errorMessage = nil
+
+            do {
+                courses = try await courseService.fetchCourses()
+            } catch {
+                errorMessage = "Something went wrong. Please try again."
+            }
+
+            isLoading = false
+        }
+    }
+
     
 }
+
