@@ -97,6 +97,7 @@ print("after save user")
         //when i update user name i need also update object that is saved on disk so it can be sync
         saveCurrentUser(savedUser)
         print("after save current user")
+        print(savedUser)
         if let index = usersSharedArr.firstIndex(where: { $0.id == savedUser.id }) {
             usersSharedArr[index] = savedUser
         }
@@ -113,6 +114,8 @@ print("after save user")
         if let data = UserDefaults.standard.data(forKey: currentUserKey),
            let user = try? JSONDecoder().decode(UserAndChef.self, from: data) {
             currentUser = user
+            print("hhhhhhhhhhhhhhhhhhhhhhh")
+            print(user)
         }
     }
 

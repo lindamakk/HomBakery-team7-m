@@ -65,6 +65,10 @@ struct ProfileView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .task {
+            //load user from disk
+            UsersRepository.shared.loadCurrentUser()
+            //paass it to name to apper in view
+                viewModel.loadUser()
             // Sequential loading to ensure cross-referencing works
             await coursesViewModel.loadCourses()
             await bookingViewModel.getUserBooking(
