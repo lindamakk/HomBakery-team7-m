@@ -9,10 +9,18 @@ import SwiftUI
 import MapKit
 
 struct CourseDetailsView: View {
-    var selectedCourse: Courses
     
+    @StateObject private var bookingViewModel = BookingViewModel()
     
+    @State private var showAlert = false
+    
+    let selectedCourse: Courses
+    let chefName: String
+    
+   
     var body: some View {
+        
+        
         ZStack {
             Color("AppBackground").ignoresSafeArea()
 
@@ -42,7 +50,8 @@ struct CourseDetailsView: View {
                         Spacer().frame(height: 24)
                         
                         CourseDetailsTable(
-                            chefName: "chef",
+                            chefName:
+                        chefName,
                                 level: selectedCourse.fields.level,
                             duration: "2h",
                             dateTime: selectedCourse.fields.startDateString,
@@ -57,16 +66,42 @@ struct CourseDetailsView: View {
                         
                         Spacer().frame(height: 24)
                         
-                        ButtonView(label: "Book a space", action: {})
+                        ButtonView(label: "Book a space", action: {
+                            
+//                            
+//                            print("clicking book button")
+//                            showAlert = true
+//                            withAnimation {
+//                            showAlert = true
+//                            }
+//                                print("clicking book button")
+//                                
+                                Task {
+                                 await   bookingViewModel.addBooking(by: selectedCourse.id, by: "userID")
+                                }
+                        })
                     }
                     .padding(.horizontal, 16) // Apply padding to the text container only
                 }
+              
             }
+            if showAlert {
+                           
+                            Color.black.opacity(0.4)
+                                .ignoresSafeArea()
+                                .onTapGesture {
+                                    withAnimation { showAlert = false }
+                                }
+                            
+                            SuccessAlert(show: $showAlert)
+                        }
         }
         .navigationTitle(selectedCourse.fields.title)
         .navigationBarTitleDisplayMode(.inline)
+//        .task {
+//                // triggers the fetch for the chef
+//                await chefViewModel.loadChefById(by: selectedCourse.fields.chefID)
+//            }
     }
 }
-//#Preview {
-//    CourseDetailsView()
-//}
+

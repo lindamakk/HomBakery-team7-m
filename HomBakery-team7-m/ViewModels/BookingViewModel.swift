@@ -24,31 +24,28 @@ final class BookingViewModel: ObservableObject {
         
         isLoading = true
         errorMessage = nil
-
         do {
-            
             bookings = try await bookingService.fetchBooking()
-            
         } catch {
             errorMessage = error.localizedDescription
         }
-
         isLoading = false
     }
     
-//    
-//    func loadCoursesById(by id: String) async {
-//        isLoading = true
-//        errorMessage = nil
+    func addBooking(by courseID: String, by userID: String) async {
+        
+        isLoading = true
+        errorMessage = nil
+        do {
+            //for debug
+            
+            try await await bookingService.addBooking( by: courseID, by: userID)
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+    }
 //
-//        do {
-//           try await bookingService.addBooking(by: id)
-//        } catch {
-//            errorMessage = error.localizedDescription
-//        }
-//
-//        isLoading = false
-//    }
-//    
     
 }

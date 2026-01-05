@@ -37,15 +37,16 @@ final class ChefService: ChefServicing {
     }
     //fetch chef by id
     func fetchChef(by id: String) async throws -> UserAndChef? {
-        let url = url
-            .appendingPathComponent(id)
+        let url = url.appendingPathComponent(id)
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(APIConstants.token, forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let response: UserAndChefResponse = try await networkManager.request(request)
-        return response.records.first
+        
+        // Change the expected type from UserAndChefResponse to UserAndChef
+        let response: UserAndChef = try await networkManager.request(request)
+        
+        
+        return response // Return the object directly
     }
 }

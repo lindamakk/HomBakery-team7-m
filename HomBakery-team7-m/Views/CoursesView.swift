@@ -8,59 +8,73 @@
 
 import SwiftUI
 
-struct CoursesView: View {
-    
-    @StateObject private var viewModel = CoursesViewModel()
-    @State private var searchText = "" // Added to handle search input
 
+struct CoursesView: View {
+    @State private var isExist = false
+    @StateObject private var chefsViewModel = ChefsViewModel()
+    @StateObject private var coursesViewModel = CoursesViewModel()
+    
+    @State private var searchText = ""
+    @State private var chefName = ""
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                // Binding the text to a state variable so users can actually type
-                SearchTextfield(text: $searchText)
-                    .padding()
-
-                if viewModel.isLoading && viewModel.courses.isEmpty {
-                    ProgressView()
-                        .frame(maxHeight: .infinity)
-                } else if let error = viewModel.errorMessage {
-                    VStack {
-                        Text("Error")
-                            .font(.headline)
-                        Text(error)
-                            .font(.subheadline)
-                    }
-                    .foregroundColor(.red)
-                    .frame(maxHeight: .infinity)
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 8) {
-                            ForEach(viewModel.courses) { course in
-                                CourseCard(course: course) {
-                                    
-                                    Task {
-                                        await viewModel.loadCoursesById(by: course.id)
+            ZStack {
+                Color("AppBackground")
+                    .ignoresSafeArea()
+                
+                ScrollView {
+                    
+                    VStack(alignment: .leading, spacing: 16) {
+                        SearchTextfield(text: $searchText).padding()
+                        // Only show the big loading spinner for the INITIAL load
+                        if coursesViewModel.isLoading && coursesViewModel.courses.isEmpty {
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        } else if let error = coursesViewModel.errorMessage {
+                            Text(error)
+                                .foregroundColor(.red)
+                                .padding()
+                        } else {
+                            LazyVStack(spacing: 8) {
+                                ForEach(coursesViewModel.courses) { course in
+                                    CourseCard(course: course) {
+                                       
+                                        Task {
+                                                
+                                                await chefsViewModel.loadChefById(by: course.fields.chefID)
+                                                
+                                            chefName = chefsViewModel.selectedChef?.fields.name ?? "Unknown Chef"
+                                            
+                                                await coursesViewModel.loadCoursesById(by: course.id)
+                                            }
                                     }
+                                    .padding(.horizontal)
+                                    // Disable interaction while one is loading to prevent double-taps
+                                    .disabled(coursesViewModel.isLoading)
                                 }
-                                .padding(.horizontal)
-                                // Prevent multiple taps while loading
-                                .disabled(viewModel.isLoading)
                             }
                         }
-                        .padding(.vertical)
                     }
+                    .padding(.vertical)
                 }
             }
-        
-            .navigationDestination(item: $viewModel.selectedCourse) { course in
-                CourseDetailsView(selectedCourse: course)
+          
+            .navigationDestination(item: $coursesViewModel.selectedCourse) { course in
+                CourseDetailsView(
+                    selectedCourse: course,
+                    chefName: chefName // Passing the pre-fetched chef
+                )
             }
             .navigationTitle("Courses")
             .navigationBarTitleDisplayMode(.inline)
-            .task {
-                
-                await viewModel.loadCourses()
-            }
+        }
+        .task {
+            await chefsViewModel.loadChefs()
+            await coursesViewModel.loadCourses()
+            
         }
     }
 }
+

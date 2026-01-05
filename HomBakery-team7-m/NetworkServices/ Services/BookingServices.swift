@@ -12,8 +12,8 @@ protocol BookingServicing {
     // Change this to return the array of Bookings
     func fetchBooking() async throws -> [Booking]
     
-    func addBooking(by id: String) async throws -> Booking?
-    func deleteBooking(by id: String) async throws -> DeleteBookingResponse?
+    func addBooking(by courseId: String,  by userId: String) async throws -> Booking?
+    func deleteBooking(by courseId: String) async throws -> DeleteBookingResponse?
 }
 
 final class BookingService: BookingServicing {
@@ -40,7 +40,7 @@ final class BookingService: BookingServicing {
     }
     
     // 2. Add booking for a specific course
-    func addBooking(by courseId: String) async throws -> Booking? {
+    func addBooking(by courseId: String, by userId: String) async throws -> Booking? {
         // Create request to the BASE url (not appending ID for POST)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -52,7 +52,7 @@ final class BookingService: BookingServicing {
         let body: [String: Any] = [
             "fields": [
                 "courseid": courseId,
-                "user_id": "recK8QGYcpM8667s9", // You should pass actual User ID here
+                "user_id": userId, // You should pass actual User ID here
                 "status": "Pending"
             ]
         ]

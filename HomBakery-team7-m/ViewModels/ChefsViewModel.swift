@@ -14,7 +14,7 @@ final class ChefsViewModel: ObservableObject {
     @Published var selectedChef: UserAndChef?
     @Published var isLoading = false
     @Published var errorMessage: String?
-
+    
     private let chefService: ChefServicing
 
     init(chefService: ChefServicing = ChefService()) {
@@ -34,17 +34,24 @@ final class ChefsViewModel: ObservableObject {
         isLoading = false
     }
 
-    func loadChef(by id: String) async {
+    func loadChefById(by id: String) async {
+        
         isLoading = true
         errorMessage = nil
 
         do {
+            
             selectedChef = try await chefService.fetchChef(by: id)
+            
+            
+            
         } catch {
             errorMessage = error.localizedDescription
         }
 
         isLoading = false
     }
+    
+    
 }
 

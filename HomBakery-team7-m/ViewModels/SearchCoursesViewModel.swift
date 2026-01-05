@@ -17,6 +17,8 @@ class SearchCoursesViewModel: ObservableObject {
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var errorMessage: String?
 
+    
+    
     private let courseService: CourseService
     // MARK: - Private
     private var allCourses: [Courses] = []

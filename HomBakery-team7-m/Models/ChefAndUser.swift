@@ -22,5 +22,5 @@ struct UserAndChef: Codable {
 
 // MARK: - UserAndChefFields
 struct UserAndChefFields: Codable {
-    let name, email, password: String
+    let name, email, password: String?
 }

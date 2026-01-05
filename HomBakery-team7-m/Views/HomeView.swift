@@ -10,8 +10,10 @@ struct HomeView: View {
     @State private var isExist = false
     @StateObject private var chefsViewModel = ChefsViewModel()
     @StateObject private var coursesViewModel = CoursesViewModel()
-    @StateObject private var bookingViewModel = BookingViewModel()
 
+
+    @State private var searchText = ""
+    @State private var chefName = ""
     var body: some View {
         NavigationStack {
             ZStack {
@@ -21,7 +23,7 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
                         
-                   
+                        SearchTextfield(text: $searchText).padding()
                         Text("Upcoming")
                             .font(.system(size: 24, weight: .semibold))
                             .padding(.horizontal)
@@ -30,7 +32,7 @@ struct HomeView: View {
                             EmptyView()
                         } else {
                             NoBookedCourses()
-                                .frame(maxWidth: .infinity, alignment: .center)
+                                .frame(maxWidth: .infinity, alignment: .center).padding()
                         }
                         
                         // 🔹 Popular courses
@@ -53,9 +55,13 @@ struct HomeView: View {
                                     CourseCard(course: course) {
                                        
                                         Task {
+                                                
+                                                await chefsViewModel.loadChefById(by: course.fields.chefID)
                                             
-                                            await coursesViewModel.loadCoursesById(by: course.id)
-                                        }
+                                            chefName = chefsViewModel.selectedChef?.fields.name ?? "Unknown Chef"
+                                            
+                                                await coursesViewModel.loadCoursesById(by: course.id)
+                                            }
                                     }
                                     .padding(.horizontal)
                                     // Disable interaction while one is loading to prevent double-taps
@@ -69,15 +75,19 @@ struct HomeView: View {
             }
           
             .navigationDestination(item: $coursesViewModel.selectedCourse) { course in
-                CourseDetailsView(selectedCourse: course)
+                CourseDetailsView(
+                    selectedCourse: course,
+                    chefName: chefName // Passing the pre-fetched chef
+                )
             }
             .navigationTitle("Home Bakery")
             .navigationBarTitleDisplayMode(.inline)
         }
         .task {
-            await chefsViewModel.loadChefs()
+
             await coursesViewModel.loadCourses()
-            await bookingViewModel.loadBooking()
+
         }
     }
 }
+
