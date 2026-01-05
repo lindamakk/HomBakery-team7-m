@@ -10,6 +10,7 @@ import Combine
 final class UsersRepository: ObservableObject {
 //static for sharing to otherrr clases
     static let shared = UsersRepository()
+    private let currentUserKey = "currentUser"
 
     private init() {}
 //i wiil not allow to create instanse just read arr
@@ -61,6 +62,8 @@ final class UsersRepository: ObservableObject {
         if user.fields.password == password {
             //here save user id after i made sure user is loged in
             currentUser = user
+            //when user log in save user object to disk
+            saveCurrentUser(user)
             print("✅ Login success")
             return .success(user: user)
         } else {
@@ -91,13 +94,42 @@ final class UsersRepository: ObservableObject {
 print("after save user")
         // 🔄 Sync shared state
         self.currentUser = savedUser
+        //when i update user name i need also update object that is saved on disk so it can be sync
+        saveCurrentUser(savedUser)
         print("after save current user")
         if let index = usersSharedArr.firstIndex(where: { $0.id == savedUser.id }) {
             usersSharedArr[index] = savedUser
         }
     }
 
+//save user in json form on devise
+    func saveCurrentUser(_ user: UserAndChef) {
+        if let data = try? JSONEncoder().encode(user) {
+            UserDefaults.standard.set(data, forKey: currentUserKey)
+        }
+    }
+    //load user from disk in json
+    func loadCurrentUser() {
+        if let data = UserDefaults.standard.data(forKey: currentUserKey),
+           let user = try? JSONDecoder().decode(UserAndChef.self, from: data) {
+            currentUser = user
+        }
+    }
 
 
 
+}
+
+
+struct AuthManager {
+    
+    //key name used to save data in UserDefaults
+    static let isLoggedInKey = "isLoggedIn"
+//return bool
+    static var isLoggedIn: Bool {
+        //Getter to read UserDefaults and return t or f
+        get { UserDefaults.standard.bool(forKey: isLoggedInKey) }
+        //Setter save new value so App remembers login after restart
+        set { UserDefaults.standard.set(newValue, forKey: isLoggedInKey) }
+    }
 }

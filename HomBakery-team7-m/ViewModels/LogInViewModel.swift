@@ -9,19 +9,14 @@
 import Foundation
 import SwiftUI
 import Combine
-
-
 @MainActor
 final class LoginViewModel: ObservableObject {
 
     @Published var email = ""
     @Published var password = ""
-    //@Published var errorMessage: String?
     @Published var error: AppError?
-    @Published var navigateToEditProfile = false
 
-
-    func login() async {
+    func login() async -> Bool {
         let result = UsersRepository.shared.login(
             email: email,
             password: password
@@ -31,17 +26,51 @@ final class LoginViewModel: ObservableObject {
         case .success(let user):
             print("Welcome \(user.fields.name)")
             error = nil
-            navigateToEditProfile = true   // trigger navigation
-            print("navigateToEditProfile =", navigateToEditProfile)
+            return true  // ✅ success
 
         case .emailNotFound:
             error = .emailNotFound
+            return false
 
         case .wrongPassword:
             error = .wrongPassword
+            return false
         }
     }
 }
+
+//
+//@MainActor
+//final class LoginViewModel: ObservableObject {
+//
+//    @Published var email = ""
+//    @Published var password = ""
+//    //@Published var errorMessage: String?
+//    @Published var error: AppError?
+//    @Published var navigateToEditProfile = false
+//
+//
+//    func login() async -> Bool{
+//        let result = UsersRepository.shared.login(
+//            email: email,
+//            password: password
+//        )
+//
+//        switch result {
+//        case .success(let user):
+//            print("Welcome \(user.fields.name)")
+//            error = nil
+//            navigateToEditProfile = true   // trigger navigation
+//            print("navigateToEditProfile =", navigateToEditProfile)
+//
+//        case .emailNotFound:
+//            error = .emailNotFound
+//
+//        case .wrongPassword:
+//            error = .wrongPassword
+//        }
+//    }
+//}
 
 
 //class UserService {

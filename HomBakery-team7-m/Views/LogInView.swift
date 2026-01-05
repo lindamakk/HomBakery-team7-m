@@ -1,19 +1,18 @@
 import SwiftUI
 
+
+import SwiftUI
 struct LogInView: View {
 
-    @Environment(\.dismiss) private var dismiss
+    var onLoginSuccess: () -> Void
     var sheetTitle: String = "Sign in"
 
     @StateObject private var viewModel = LoginViewModel()
 
     var body: some View {
-
         NavigationStack {
-
             ZStack {
-                Color(.systemGray6)
-                    .ignoresSafeArea()
+                Color(.systemGray6).ignoresSafeArea()
 
                 VStack(spacing: 0) {
 
@@ -30,50 +29,27 @@ struct LogInView: View {
                             .frame(width: 40, height: 5)
                             .padding(.top, 8)
 
-                        ZStack {
-                            Text(sheetTitle)
-                                .font(.title2)
-                                .fontWeight(.bold)
+                        Text(sheetTitle)
+                            .font(.title2)
+                            .fontWeight(.bold)
 
-                            HStack {
-                                Spacer()
-                                Button {
-                                    dismiss()
-                                } label: {
-                                    Image(systemName: "xmark")
-                                        .foregroundColor(.gray)
-                                        .padding(10)
-                                        .background(Color.gray.opacity(0.15))
-                                        .clipShape(Circle())
-                                }
-                            }
-                        }
+                        Textfield(label: "Email", textInput: $viewModel.email, isPassword: false)
 
-                        Textfield(
-                            label: "Email",
-                            textInput: $viewModel.email,
-                            isPassword: false
-                        )
-
-                        Textfield(
-                            label: "Password",
-                            textInput: $viewModel.password,
-                            isPassword: true
-                        )
+                        Textfield(label: "Password", textInput: $viewModel.password, isPassword: true)
 
                         ButtonView(label: "Sign In") {
                             Task {
-                                await viewModel.login()
+                                let success = await viewModel.login()
+                                if success {
+                                    onLoginSuccess()  // ✅ dismiss sheet
+                                }
                             }
                         }
 
                         Spacer()
                     }
                     .padding(24)
-                    .background(Color(.systemGray6))
-                    //  .cornerRadius(30, corners: [.topLeft, .topRight])
                 }
-                .ignoresSafeArea(edges: .bottom)
             }
             .alert(item: $viewModel.error) { error in
                 Alert(
@@ -82,13 +58,6 @@ struct LogInView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
-
-            // ✅ MUST be inside NavigationStack
-            .navigationDestination(
-                isPresented: $viewModel.navigateToEditProfile
-            ) {
-                ProfileView()
-            }
         }
     }
 }
@@ -96,115 +65,378 @@ struct LogInView: View {
 //
 //struct LogInView: View {
 //
-//    @Environment(\.dismiss) private var dismiss
-//
+//    var onLoginSuccess: () -> Void
 //    var sheetTitle: String = "Sign in"
+//
 //    @StateObject private var viewModel = LoginViewModel()
 //
-////    @Binding private var email : String
-////    @Binding private var password : String
-//    @State private var isPasswordVisible = false
-//
 //    var body: some View {
+//
 //        NavigationStack {
-//        ZStack {
-//            // خلفية رمادية فاتحة
-//            Color(.systemGray6)
-//                .ignoresSafeArea()
+//            ZStack {
+//                Color(.systemGray6)
+//                    .ignoresSafeArea()
 //
-//            VStack(spacing: 0) {
+//                VStack(spacing: 0) {
 //
-//                // صورة الهيدر
-//                Image("bakery_header") // تأكدي من وجودها في Assets
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(height: 160)
-//                    .clipped()
+//                    Image("bakery_header")
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fill)
+//                        .frame(height: 160)
+//                        .clipped()
 //
-//                // الكرت الأبيض
-//                VStack(spacing: 24) {
+//                    VStack(spacing: 24) {
 //
-//                    // Drag Indicator
-//                    Capsule()
-//                        .fill(Color.gray.opacity(0.4))
-//                        .frame(width: 40, height: 5)
-//                        .padding(.top, 8)
+//                        Capsule()
+//                            .fill(Color.gray.opacity(0.4))
+//                            .frame(width: 40, height: 5)
+//                            .padding(.top, 8)
 //
-//                    // العنوان + زر الإغلاق
-//                    ZStack {
 //                        Text(sheetTitle)
 //                            .font(.title2)
 //                            .fontWeight(.bold)
 //
-//                        HStack {
-//                            Spacer()
-//                            Button {
-//                                dismiss()
-//                            } label: {
-//                                Image(systemName: "xmark")
-//                                    .foregroundColor(.gray)
-//                                    .padding(10)
-//                                    .background(Color.gray.opacity(0.15))
-//                                    .clipShape(Circle())
+//                        Textfield(
+//                            label: "Email",
+//                            textInput: $viewModel.email,
+//                            isPassword: false
+//                        )
+//
+//                        Textfield(
+//                            label: "Password",
+//                            textInput: $viewModel.password,
+//                            isPassword: true
+//                        )
+//
+//                        ButtonView(label: "Sign In") {
+//                            Task {
+//                                let success = await viewModel.login()
+//                                if success {
+//                                    onLoginSuccess() // ✅ dismiss sheet
+//                                }
 //                            }
 //                        }
+//
+//                        Spacer()
 //                    }
-//
-//
-//
-//                    //Email
-//                    Textfield(label: "Email",  textInput: $viewModel.email, isPassword: false,)
-//
-//                    //password
-//                    Textfield(label: "Password",  textInput: $viewModel.password, isPassword: true,)
-//
-//
-//                    ButtonView(label: "Sign In") {
-//                        Task{
-//                            await viewModel.login()
-//                        }
-//                    }
-//                    Spacer()
+//                    .padding(24)
 //                }
-//                .padding(24)
-//                .background(Color(.systemGray6))
-//                .cornerRadius(30, corners: [.topLeft, .topRight])
 //            }
-//            .ignoresSafeArea(edges: .bottom)
+//            .alert(item: $viewModel.error) { error in
+//                Alert(
+//                    title: Text("Error"),
+//                    message: Text(error.localizedDescription),
+//                    dismissButton: .default(Text("OK"))
+//                )
+//            }
 //        }
-//
-//        //
 //    }
-//        .navigationDestination(
-//            isPresented: $viewModel.navigateToEditProfile
-//        ) {
-//            ProfileView()
+//}
+
+//
+//struct LogInView: View {
+//
+//    @Environment(\.dismiss) private var dismiss
+//    var sheetTitle: String = "Sign in"
+//
+//    @StateObject private var viewModel = LoginViewModel()
+//
+//    var body: some View {
+//
+//        NavigationStack {
+//            ZStack {
+//                Color(.systemGray6)
+//                    .ignoresSafeArea()
+//
+//                VStack(spacing: 0) {
+//
+//                    // Header image
+//                    Image("bakery_header")
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fill)
+//                        .frame(height: 160)
+//                        .clipped()
+//
+//                    VStack(spacing: 24) {
+//
+//                        // Drag indicator
+//                        Capsule()
+//                            .fill(Color.gray.opacity(0.4))
+//                            .frame(width: 40, height: 5)
+//                            .padding(.top, 8)
+//
+//                        // Title + close
+//                        ZStack {
+//                            Text(sheetTitle)
+//                                .font(.title2)
+//                                .fontWeight(.bold)
+//
+//                            HStack {
+//                                Spacer()
+//                                Button {
+//                                    dismiss()
+//                                } label: {
+//                                    Image(systemName: "xmark")
+//                                        .foregroundColor(.gray)
+//                                        .padding(10)
+//                                        .background(Color.gray.opacity(0.15))
+//                                        .clipShape(Circle())
+//                                }
+//                            }
+//                        }
+//
+//                        // Email
+//                        Textfield(
+//                            label: "Email",
+//                            textInput: $viewModel.email,
+//                            isPassword: false
+//                        )
+//
+//                        // Password
+//                        Textfield(
+//                            label: "Password",
+//                            textInput: $viewModel.password,
+//                            isPassword: true
+//                        )
+//
+//                        // Sign in button
+//                        ButtonView(label: "Sign In") {
+//                            Task {
+//                                await viewModel.login()
+//                            }
+//                        }
+//
+//                        Spacer()
+//                    }
+//                    .padding(24)
+//                    .background(Color(.systemGray6))
+//                }
+//                .ignoresSafeArea(edges: .bottom)
+//            }
+//            .alert(item: $viewModel.error) { error in
+//                Alert(
+//                    title: Text("Error"),
+//                    message: Text(error.localizedDescription),
+//                    dismissButton: .default(Text("OK"))
+//                )
+//            }
+//            .navigationDestination(
+//                isPresented: $viewModel.navigateToEditProfile
+//            ) {
+//                ProfileView()
+//            }
 //        }
+//    }
+//}
+
+
+
 //
-//    }
-//}
-//extension View {
-//    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-//        clipShape(RoundedCorner(radius: radius, corners: corners))
+//struct LogInView: View {
+//
+//    @Environment(\.dismiss) private var dismiss
+//    var sheetTitle: String = "Sign in"
+//
+//    @StateObject private var viewModel = LoginViewModel()
+//
+//    var body: some View {
+//
+//        NavigationStack {
+//
+//            ZStack {
+//                Color(.systemGray6)
+//                    .ignoresSafeArea()
+//
+//                VStack(spacing: 0) {
+//
+//                    Image("bakery_header")
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fill)
+//                        .frame(height: 160)
+//                        .clipped()
+//
+//                    VStack(spacing: 24) {
+//
+//                        Capsule()
+//                            .fill(Color.gray.opacity(0.4))
+//                            .frame(width: 40, height: 5)
+//                            .padding(.top, 8)
+//
+//                        ZStack {
+//                            Text(sheetTitle)
+//                                .font(.title2)
+//                                .fontWeight(.bold)
+//
+//                            HStack {
+//                                Spacer()
+//                                Button {
+//                                    dismiss()
+//                                } label: {
+//                                    Image(systemName: "xmark")
+//                                        .foregroundColor(.gray)
+//                                        .padding(10)
+//                                        .background(Color.gray.opacity(0.15))
+//                                        .clipShape(Circle())
+//                                }
+//                            }
+//                        }
+//
+//                        Textfield(
+//                            label: "Email",
+//                            textInput: $viewModel.email,
+//                            isPassword: false
+//                        )
+//
+//                        Textfield(
+//                            label: "Password",
+//                            textInput: $viewModel.password,
+//                            isPassword: true
+//                        )
+//
+//                        ButtonView(label: "Sign In") {
+//                            Task {
+//                                await viewModel.login()
+//                            }
+//                        }
+//
+//                        Spacer()
+//                    }
+//                    .padding(24)
+//                    .background(Color(.systemGray6))
+//                    //  .cornerRadius(30, corners: [.topLeft, .topRight])
+//                }
+//                .ignoresSafeArea(edges: .bottom)
+//            }
+//            .alert(item: $viewModel.error) { error in
+//                Alert(
+//                    title: Text("Error"),
+//                    message: Text(error.localizedDescription),
+//                    dismissButton: .default(Text("OK"))
+//                )
+//            }
+//
+//            // ✅ MUST be inside NavigationStack
+//            .navigationDestination(
+//                isPresented: $viewModel.navigateToEditProfile
+//            ) {
+//                ProfileView()
+//            }
+//        }
 //    }
 //}
 //
-//struct RoundedCorner: Shape {
-//    var radius: CGFloat = .infinity
-//    var corners: UIRectCorner = .allCorners
-//
-//    func path(in rect: CGRect) -> Path {
-//        let path = UIBezierPath(
-//            roundedRect: rect,
-//            byRoundingCorners: corners,
-//            cornerRadii: CGSize(width: radius, height: radius)
-//        )
-//        return Path(path.cgPath)
-//    }
-//}
-//// للمعاينة
-//struct SignInView_Previews: PreviewProvider {
-//    static var previews: some View {
-//       LogInView()
-//    }
-//}
+////
+////struct LogInView: View {
+////
+////    @Environment(\.dismiss) private var dismiss
+////
+////    var sheetTitle: String = "Sign in"
+////    @StateObject private var viewModel = LoginViewModel()
+////
+//////    @Binding private var email : String
+//////    @Binding private var password : String
+////    @State private var isPasswordVisible = false
+////
+////    var body: some View {
+////        NavigationStack {
+////        ZStack {
+////            // خلفية رمادية فاتحة
+////            Color(.systemGray6)
+////                .ignoresSafeArea()
+////
+////            VStack(spacing: 0) {
+////
+////                // صورة الهيدر
+////                Image("bakery_header") // تأكدي من وجودها في Assets
+////                    .resizable()
+////                    .aspectRatio(contentMode: .fill)
+////                    .frame(height: 160)
+////                    .clipped()
+////
+////                // الكرت الأبيض
+////                VStack(spacing: 24) {
+////
+////                    // Drag Indicator
+////                    Capsule()
+////                        .fill(Color.gray.opacity(0.4))
+////                        .frame(width: 40, height: 5)
+////                        .padding(.top, 8)
+////
+////                    // العنوان + زر الإغلاق
+////                    ZStack {
+////                        Text(sheetTitle)
+////                            .font(.title2)
+////                            .fontWeight(.bold)
+////
+////                        HStack {
+////                            Spacer()
+////                            Button {
+////                                dismiss()
+////                            } label: {
+////                                Image(systemName: "xmark")
+////                                    .foregroundColor(.gray)
+////                                    .padding(10)
+////                                    .background(Color.gray.opacity(0.15))
+////                                    .clipShape(Circle())
+////                            }
+////                        }
+////                    }
+////
+////
+////
+////                    //Email
+////                    Textfield(label: "Email",  textInput: $viewModel.email, isPassword: false,)
+////
+////                    //password
+////                    Textfield(label: "Password",  textInput: $viewModel.password, isPassword: true,)
+////
+////
+////                    ButtonView(label: "Sign In") {
+////                        Task{
+////                            await viewModel.login()
+////                        }
+////                    }
+////                    Spacer()
+////                }
+////                .padding(24)
+////                .background(Color(.systemGray6))
+////                .cornerRadius(30, corners: [.topLeft, .topRight])
+////            }
+////            .ignoresSafeArea(edges: .bottom)
+////        }
+////
+////        //
+////    }
+////        .navigationDestination(
+////            isPresented: $viewModel.navigateToEditProfile
+////        ) {
+////            ProfileView()
+////        }
+////
+////    }
+////}
+////extension View {
+////    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+////        clipShape(RoundedCorner(radius: radius, corners: corners))
+////    }
+////}
+////
+////struct RoundedCorner: Shape {
+////    var radius: CGFloat = .infinity
+////    var corners: UIRectCorner = .allCorners
+////
+////    func path(in rect: CGRect) -> Path {
+////        let path = UIBezierPath(
+////            roundedRect: rect,
+////            byRoundingCorners: corners,
+////            cornerRadii: CGSize(width: radius, height: radius)
+////        )
+////        return Path(path.cgPath)
+////    }
+////}
+////// للمعاينة
+////struct SignInView_Previews: PreviewProvider {
+////    static var previews: some View {
+////       LogInView()
+////    }
+////}
