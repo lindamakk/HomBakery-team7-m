@@ -20,12 +20,7 @@ struct HomBakery_team7_mApp: App {
 //            RootView()
 
             
-                EventCard(
-                    startDate: Date().timeIntervalSince1970,
-                    title: "Babka dough",
-                    location: "Riyadh, Alnarjis",
-                    time: "4:00 PM – 6:00 PM"
-                )
+            TestSearchView()
             
             //                .task {
 //                    await UsersRepository.shared.loadUsersIfNeeded()

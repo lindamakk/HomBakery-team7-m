@@ -17,14 +17,18 @@ class SearchCoursesViewModel: ObservableObject {
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var errorMessage: String?
 
+    private let courseService: CourseService
     // MARK: - Private
     private var allCourses: [Courses] = []
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Init
-    init() {
+    init(courseService: CourseService = CourseService()) {
+        self.courseService = courseService
+        isLoading = true
+        errorMessage = nil
         setupSearch()
-        fetchCourses()
+        fetchCourses() // Fetch courses when view model is initialized
     }
 
     // MARK: - Search Logic
@@ -49,40 +53,21 @@ class SearchCoursesViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Fetch
-    private func fetchCourses() {
+    // MARK: - Fetch Courses
+    func fetchCourses() {
         isLoading = true
         errorMessage = nil
 
-        let url = APIConstants.baseURL.appendingPathComponent("course")
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue(APIConstants.token, forHTTPHeaderField: "Authorization")
-
-        URLSession.shared.dataTask(with: request) { [weak self] data, response, _ in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-            }
-
-            guard let data else {
-                DispatchQueue.main.async {
-                    self?.errorMessage = "No data received"
-                }
-                return
-            }
-
+        Task {
             do {
-                let decoded = try JSONDecoder().decode(ClassesResponse.self, from: data)
-                DispatchQueue.main.async {
-                    self?.allCourses = decoded.records
-                    self?.results = decoded.records
-                }
+                let courses = try await courseService.fetchCourses()
+                allCourses = courses // Populate the allCourses array
+                results = courses // Set initial results
             } catch {
-                DispatchQueue.main.async {
-                    self?.errorMessage = "Failed to load courses"
-                }
-                print("Decoding error:", error)
+                errorMessage = error.localizedDescription
             }
-        }.resume()
+
+            isLoading = false
+        }
     }
 }
