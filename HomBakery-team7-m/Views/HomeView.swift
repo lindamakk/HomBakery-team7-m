@@ -10,7 +10,7 @@ struct HomeView: View {
     @State private var isExist = false
     @StateObject private var chefsViewModel = ChefsViewModel()
     @StateObject private var coursesViewModel = CoursesViewModel()
-
+    @StateObject private var bookingViewModel = BookingViewModel()
 
     @State private var searchText = ""
     @State private var chefName = ""
@@ -28,9 +28,19 @@ struct HomeView: View {
                             .font(.system(size: 24, weight: .semibold))
                             .padding(.horizontal)
                         
-                        if isExist {
-                            EmptyView()
-                        } else {
+                       
+                        if let firstCourse = bookingViewModel.bookedCourses.first {
+                                                  EventCard(
+                                                      startDate: TimeInterval(firstCourse.fields.startDate),
+                                                      title: firstCourse.fields.title,
+                                                      location: firstCourse.fields.locationName,
+                                                      time: formattedTime(
+                                                          start: TimeInterval(firstCourse.fields.startDate),
+                                                          end: TimeInterval(firstCourse.fields.endDate)
+                                                      )
+                                                  ).padding()
+                                              }
+ else {
                             NoBookedCourses()
                                 .frame(maxWidth: .infinity, alignment: .center).padding()
                         }
@@ -86,6 +96,11 @@ struct HomeView: View {
         .task {
 
             await coursesViewModel.loadCourses()
+            await bookingViewModel.loadBooking()
+            await bookingViewModel.getUserBooking(
+                              userID: "123",
+                              allCourses: coursesViewModel.courses
+                          )
 
         }
     }

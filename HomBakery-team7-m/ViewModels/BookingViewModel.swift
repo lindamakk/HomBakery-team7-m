@@ -14,6 +14,8 @@ final class BookingViewModel: ObservableObject {
     @Published var bookings: [Booking] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var bookedCourses: [Courses] = []
+    @Published var useBookings: [Booking] = []
     private let bookingService: BookingServicing
     
     init(bookingService: BookingServicing = BookingService()) {
@@ -69,5 +71,31 @@ final class BookingViewModel: ObservableObject {
         isLoading = false
     }
 //
+    func getUserBooking(
+    userID: String,
+    allCourses: [Courses]
+) async {
+
+    await loadBooking()
+
+    // 1️⃣ فلترة bookings حسب اليوزر
+    let userBookings = bookings.filter {
+        $0.fields.userID == userID
+    }
+
+    print("🎟 User bookings:", userBookings.count)
+
+    // 2️⃣ استخراج course IDs
+    let courseIDs = userBookings.compactMap { $0.fields.courseid }
+
+    print("🆔 Course IDs:", courseIDs)
+
+    // 3️⃣ مطابقة مع courses
+    bookedCourses = allCourses.filter {
+        courseIDs.contains($0.id)
+    }
+
+    print("📚 Booked courses:", bookedCourses.count)
+}
     
 }
