@@ -48,7 +48,7 @@ struct CourseDetailsView: View {
                         CourseDetailsTable(
                             chefName: chefName,
                             level: selectedCourse.fields.level,
-                            duration: "2h",
+                            duration:  selectedCourse.fields.durationString,
                             dateTime: selectedCourse.fields.startDateString,
                             location: selectedCourse.fields.locationName
                         )

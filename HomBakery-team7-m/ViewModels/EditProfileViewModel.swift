@@ -34,7 +34,7 @@ final class EditProfileViewModel: ObservableObject {
             return
         }
 
-        name = user.fields.name   // ⭐ populate text field
+        name = user.fields.name ?? ""   // ⭐ populate text field
         print("👤 Loaded user name:", name)
     }
     
