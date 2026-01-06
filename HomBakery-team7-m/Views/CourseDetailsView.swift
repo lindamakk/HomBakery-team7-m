@@ -16,7 +16,7 @@ struct CourseDetailsView: View {
     let chefName: String
     
     // placeholder
-    private let currentUserID = "123"
+    private let currentUserID = "recK8QGYcpM8667s9"
     
     var body: some View {
         ZStack {

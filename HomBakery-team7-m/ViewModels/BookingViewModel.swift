@@ -78,24 +78,24 @@ final class BookingViewModel: ObservableObject {
 
     await loadBooking()
 
-    // 1️⃣ فلترة bookings حسب اليوزر
+    //  فلترة bookings حسب اليوزر
     let userBookings = bookings.filter {
         $0.fields.userID == userID
     }
 
     print("🎟 User bookings:", userBookings.count)
 
-    // 2️⃣ استخراج course IDs
+    //  استخراج course IDs
     let courseIDs = userBookings.compactMap { $0.fields.courseid }
 
-    print("🆔 Course IDs:", courseIDs)
+    print(" Course IDs:", courseIDs)
 
-    // 3️⃣ مطابقة مع courses
+    //  مطابقة مع courses
     bookedCourses = allCourses.filter {
         courseIDs.contains($0.id)
     }
 
-    print("📚 Booked courses:", bookedCourses.count)
+    print(" Booked courses:", bookedCourses.count)
 }
     
 }

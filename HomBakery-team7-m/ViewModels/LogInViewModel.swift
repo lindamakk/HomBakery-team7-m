@@ -26,7 +26,7 @@ final class LoginViewModel: ObservableObject {
         case .success(let user):
             print("Welcome \(user.fields.name)")
             error = nil
-            return true  // ✅ success
+            return true  //  success
 
         case .emailNotFound:
             error = .emailNotFound
@@ -39,101 +39,3 @@ final class LoginViewModel: ObservableObject {
     }
 }
 
-//
-//@MainActor
-//final class LoginViewModel: ObservableObject {
-//
-//    @Published var email = ""
-//    @Published var password = ""
-//    //@Published var errorMessage: String?
-//    @Published var error: AppError?
-//    @Published var navigateToEditProfile = false
-//
-//
-//    func login() async -> Bool{
-//        let result = UsersRepository.shared.login(
-//            email: email,
-//            password: password
-//        )
-//
-//        switch result {
-//        case .success(let user):
-//            print("Welcome \(user.fields.name)")
-//            error = nil
-//            navigateToEditProfile = true   // trigger navigation
-//            print("navigateToEditProfile =", navigateToEditProfile)
-//
-//        case .emailNotFound:
-//            error = .emailNotFound
-//
-//        case .wrongPassword:
-//            error = .wrongPassword
-//        }
-//    }
-//}
-
-
-//class UserService {
-//
-//    func fetchUsers() async throws -> [UserAndChef] {
-//        let endPoint = ""
-//        guard let url = URL(string: endPoint) else { throw userError.invalidURL }
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//
-//        // Add Airtable API key (replace YOUR_API_KEY)
-//        request.setValue("", forHTTPHeaderField: "Authorization")
-//
-//        // Optional: set JSON content type
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//
-//        // Make the request
-//        let (data, response) = try await URLSession.shared.data(for: request)
-//
-//        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-//            throw userError.invalidResponseFromServer
-//        }
-//
-//        do {
-//            let decoder = JSONDecoder()
-//            return try decoder.decode(UserAndChefResponse.self, from: data).records
-//
-//        } catch {
-//            throw userError.invalidData
-//        }
-//    }
-////func
-//    enum userError: Error {
-//        case invalidURL
-//        case invalidResponseFromServer
-//        case invalidData
-//
-//
-//    }//enum
-//
-//}
-//
-//struct TestUsersView: View {
-//    let service = UserService()
-//
-//    var body: some View {
-//        Text("Check Console")
-//            .task {
-//                do {
-//                    let users = try await service.fetchUsers()
-//                    print("Users count:", users.count)
-//
-//                    for user in users {
-//                        print(user)
-//                    }
-//
-//                } catch {
-//                    print("Error:", error)
-//                }
-//            }
-//    }
-//}
-//#Preview {
-//    TestUsersView()
-//}

@@ -30,11 +30,11 @@ final class EditProfileViewModel: ObservableObject {
     //load user name so it can apper on screen
     func loadUser() {
         guard let user = UsersRepository.shared.currentUser else {
-            print("❌ No current user")
+            print(" No current user")
             return
         }
 
-        name = user.fields.name ?? ""   // ⭐ populate text field
+        name = user.fields.name ?? ""   //  populate text field
         print("👤 Loaded user name:", name)
     }
     
@@ -62,9 +62,9 @@ final class EditProfileViewModel: ObservableObject {
                 self.showSuccess = false
             }
             error = nil
-            print("✅ name updated")
+            print(" name updated")
         } catch {
-            print("❌ Save failed:", error)
+            print(" Save failed:", error)
             self.error = .networkError
 
 

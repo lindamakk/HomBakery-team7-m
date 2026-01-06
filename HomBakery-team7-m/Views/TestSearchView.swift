@@ -28,7 +28,7 @@ struct TestSearchView: View {
             }
         }
         .onAppear {
-            print("🟢 TestSearchView appeared")
+            print(" TestSearchView appeared")
         }
     }
 }

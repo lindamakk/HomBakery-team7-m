@@ -88,14 +88,14 @@ final class UserService: UserServicing {
         ]
         
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
-        print("📤 Sending update request for user:", user.id)
+        print(" Sending update request for user:", user.id)
 
         do {
             let updatedUser: UserAndChef = try await networkManager.request(request)
-            print("✅ Update request succeeded:", updatedUser.fields.name)
+            print(" Update request succeeded:", updatedUser.fields.name)
             return updatedUser
         } catch {
-            print("❌ Update request failed:", error)
+            print("Update request failed:", error)
             throw error
         }
     }

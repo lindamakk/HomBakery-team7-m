@@ -98,7 +98,7 @@ struct HomeView: View {
             await coursesViewModel.loadCourses()
             await bookingViewModel.loadBooking()
             await bookingViewModel.getUserBooking(
-                              userID: "123",
+                              userID: "recK8QGYcpM8667s9",
                               allCourses: coursesViewModel.courses
                           )
 

@@ -34,7 +34,7 @@ final class UsersRepository: ObservableObject {
             self.usersSharedArr = fetchedUsers
             self.hasFetched = true
         } catch {
-            print("❌ Failed to fetch users:", error)
+            print(" Failed to fetch users:", error)
         }
     }
 
@@ -54,20 +54,20 @@ final class UsersRepository: ObservableObject {
     func login(email: String, password: String) -> LoginResult {
 //serch for email
         guard let user = user(email: email) else {
-            print("❌ Email not found")
+            print(" Email not found")
             return .emailNotFound
         }
 
         // 2️⃣ نتحقق من كلمة المرور
         if user.fields.password == password {
-            //here save user id after i made sure user is loged in
+            //here save user  after i made sure user is loged in save in shared variable
             currentUser = user
             //when user log in save user object to disk
             saveCurrentUser(user)
-            print("✅ Login success")
+            print(" Login success")
             return .success(user: user)
         } else {
-            print("❌ Wrong password")
+            print("Wrong password")
             return .wrongPassword
         }
     }
@@ -75,7 +75,7 @@ final class UsersRepository: ObservableObject {
     func updateCurrentUser(name: String) async throws {
 
         guard let currentUser = currentUser else {
-            print("❌ No current user!")
+            print(" No current user!")
             throw NSError(domain: "No logged user", code: 401)
         }
 
@@ -92,7 +92,7 @@ final class UsersRepository: ObservableObject {
 
         let savedUser = try await service.updateUser(user: currentUser , newNameU: name)
 print("after save user")
-        // 🔄 Sync shared state
+        //  Sync shared state
         self.currentUser = savedUser
         //when i update user name i need also update object that is saved on disk so it can be sync
         saveCurrentUser(savedUser)
